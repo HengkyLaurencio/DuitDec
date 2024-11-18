@@ -41,6 +41,11 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
             templateUrl: 'views/register.html',
             controller: 'RegisterController'
         })
+        .state('transaction', {
+            url: '/transaction',
+            templateUrl: 'views/transaction.html',
+            controller: 'TransactionController'
+        })
 });
 
 app.controller('HomeController', function ($scope) {
