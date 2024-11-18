@@ -1,5 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-primary">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DuitDec Landing Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="font-poppins text-white bg-primary">
+    <!-- Navbar -->
+    <nav id="navbar" style="margin-bottom: 0;" class="bg-primary px-6 py-4 fixed w-full top-0 z-40">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-2xl font-bold text-yellow-500">DuitDec</div>
+            <ul style="font-size: 18px" class="flex space-x-4 font-bold">
+                <li><a href="#features-section" class="text-white hover:bg-secondary-500 px-3 py-2 rounded transition-colors">Feature</a></li>
+                <li><a href="#testimonial-section" class="text-white hover:bg-secondary-500 px-3 py-2 rounded transition-colors">Testimonial</a></li>
+                <li><a href="loginpage.html" class="text-white hover:bg-secondary-500 px-3 py-2 rounded transition-colors">Login</a></li>
+            </ul>
+        </div>
+    </nav>
 
-<div class="container mx-auto">
-    <h1 class="text-4xl font-bold text-center mt-5">{{ message }}</h1>
-</div>
-  
+    <!-- Center Card -->
+    <div id="center-card" style="width: 98%; margin-top: 65px; margin-bottom: 0;" class="container mx-auto p-6 bg-white text-gray-900 rounded-lg shadow-lg flex flex-col lg:flex-row lg:items-center">
+        <div class="lg:w-2/3 mb-6 lg:mb-0">
+            <h2 style="font-size: 75px; margin-top: 60px;" class="font-bold text-yellow-500 mb-4">Your trusted financial companion.</h2>
+            <p style="margin-bottom: 60px; font-size: 25px;" class="font-bold">DuitDec is your modern and intuitive partner for modeling, planning, and aligning your finances.</p>
+        </div>
+        <div class="lg:w-1/3">
+            <img src="images/preview1.png" alt="App Preview" class="w-full h-auto" loading="lazy">
+        </div>
+    </div>
+
+    <!-- Sponsor Section -->
+    <div id="card-container" style="margin-top: 10px; width: 98%;" class="container mx-auto flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-6 my-12">
+        <div style=" width: 70%; gap: 150px;" class="flex flex-wrap justify-center items-center bg-white p-6 rounded-lg shadow-lg lg:w-3/4">
+            <img src="images/FTI.png" alt="Sponsor 1" class="h-24 mx-4 my-2" loading="lazy">
+            <img src="images/BEM.png" alt="Sponsor 2" class="h-24 mx-4 my-2" loading="lazy">
+            <img src="images/DPM.png" alt="Sponsor 3" class="h-24 mx-4 my-2" loading="lazy">
+        </div>
+        <a href="registerpage.html" style="width: 30%; text-align: center; padding-top: 55px; font-size: 50px; background-color: #f9a600;" class="bg-secondary text-white py-4 px-8 rounded-lg text-2xl font-bold transition-colors">Get Access</a>
+    </div>
+
+    <!-- Features Section -->
+<section id="features-section" style="width: 90%;" class="container mx-auto bg-white p-8 rounded-lg shadow-lg flex flex-col lg:flex-row my-12 min-h-screen">
+        <div class="lg:w-1/2">
+            <h2 class="text-3xl font-bold text-yellow-500 mb-6">Features</h2>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xl font-semibold mb-2">Transaction Tracking</h3>
+                    <p class="text-gray-700">Effortlessly record your transactions in real time. Keep an eye on your spending habits, categorize your expenses, and gain insights into your financial activities. This feature ensures that you never lose track of where your money goes.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2">Budget Management</h3>
+                    <p class="text-gray-700">Set and manage your budgets with ease. Define your spending limits for various categories and monitor your progress. This feature empowers you to take control of your finances and make informed decisions to stay within your means.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2">Debt Recording</h3>
+                    <p class="text-gray-700">Easily keep track of your debts and payment schedules. This feature helps you stay organized, plan your repayments, and manage your financial obligations effectively, reducing stress and helping you achieve financial freedom.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2">Expense Reports</h3>
+                    <p class="text-gray-700">Generate detailed reports to visualize your spending patterns over time. Analyze your expenses by categories to identify areas for improvement and make smarter financial decisions.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2">Savings Goals</h3>
+                    <p class="text-gray-700">Set specific savings goals and track your progress towards achieving them. This feature motivates you to save effectively and helps you reach your financial objectives.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2">Investment Tracker</h3>
+                    <p class="text-gray-700">Monitor your investments and track their performance in real-time. Get insights into your investment portfolio to make informed decisions that align with your financial goals.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2">Financial Tips</h3>
+                    <p class="text-gray-700">Receive personalized financial advice and tips based on your spending habits. This feature helps you optimize your finances and learn best practices for managing your money.</p>
+                </div>
+            </div>
+        </div>
+        <div class="lg:w-1/2 flex flex-col justify-center items-center space-y-6 mt-6 lg:mt-0">
+            <img src="images/preview2.png" alt="Feature Image" class="rounded-lg w-3/4" loading="lazy">
+            <img src="images/preview3.png" alt="Feature Image" class="rounded-lg w-3/4" loading="lazy">
+        </div>
+    </section>
+
+    <!-- Testimonial Section -->
+    <section id="testimonial-section" style="width: 98%; gap: 1000px;" class="bg-white p-8 rounded-lg shadow-lg container mx-auto my-12 text-center">
+        <h2 class="text-3xl font-bold text-yellow-500 mb-8">What Our Users Say</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="bg-primary text-white p-6 rounded-lg shadow-md">
+                <p class="mb-4">"DuitDec has changed the way I manage my finances. The insights and analytics are top-notch!"</p>
+                <span class="block italic text-yellow-500">- Sarah, Freelance Designer</span>
+            </div>
+            <div class="bg-primary text-white p-6 rounded-lg shadow-md">
+                <p class="mb-4">"Thanks to DuitDec, I can finally keep track of my expenses and save for my goals effectively."</p>
+                <span class="block italic text-yellow-500">- John, Software Developer</span>
+            </div>
+            <div class="bg-primary text-white p-6 rounded-lg shadow-md">
+                <p class="mb-4">"A must-have app for anyone who wants to make smarter financial decisions."</p>
+                <span class="block italic text-yellow-500">- Emily, Business Owner</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer" style="font-weight: bold; font-size: 20px;" class="bg-primary text-white py-8">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row justify-between items-center mb-8">
+                <div style="font-size: 40px;" class="font-bold text-yellow-500 mb-4 lg:mb-0">DuitDec</div>
+                <ul class="flex flex-wrap justify-center space-x-6 mb-4 lg:mb-0">
+                    <li><a href="#navbar" class="hover:text-yellow-500 transition-colors">Home</a></li>
+                    <li><a href="#features-section" class="hover:text-yellow-500 transition-colors">Feature</a></li>
+                    <li><a href="#testimonial-section" class="hover:text-yellow-500 transition-colors">Testimonial</a></li>
+                    <li><a href="#contact" class="hover:text-yellow-500 transition-colors">Contact</a></li>
+                </ul>
+                <div class="flex space-x-4">
+                    <a href="#" class="hover:text-yellow-500 transition-colors" aria-label="Facebook">
+                        <span class="material-icons">facebook</span>
+                    </a>
+                    <a href="#" class="hover:text-yellow-500 transition-colors" aria-label="Twitter">
+                        <span class="material-icons">facebook</span>
+                    </a>
+                    <a href="#" class="hover:text-yellow-500 transition-colors" aria-label="Instagram">
+                        <span class="material-icons">facebook</span>
+                    </a>
+                </div>
+            </div>
+            <div class="text-center text-sm pt-8">
+                <p class="mb-2">&copy; 2024 DuitDec. All rights reserved.</p>
+                <div>
+                    <a href="#" class="text-yellow-500 hover:text-yellow-400 transition-colors">Privacy Policy</a> | 
+                    <a href="#" class="text-yellow-500 hover:text-yellow-400 transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

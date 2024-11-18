@@ -7,3 +7,4 @@ export default {
         outDir: '../dist',
     },
 }
+
