@@ -30,7 +30,17 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
                     controller: 'OverviewController'
                 }
             }
-        });
+        })
+        .state('login', {
+            url: '/login',
+            templateUrl: 'views/login.html',
+            controller: 'LoginController'
+        })
+        .state('register', {
+            url: '/register',
+            templateUrl: 'views/register.html',
+            controller: 'RegisterController'
+        })
 });
 
 app.controller('HomeController', function ($scope) {

@@ -1,0 +1,78 @@
+<img class="absolute top-0 left-0 w-full h-full object-cover opacity-10 -z-10"
+src="https://www.bi.go.id/Style%20Library/biweb/img/bi-photo.jpg" alt="Background">
+
+<div
+style="margin-top: 110px; max-width: 60%;" class="mx-auto flex flex-col bg-[#f8f2e4] border border-gray-500 w-11/12 p-8 rounded-lg fade-in">
+<div
+    class="flex flex-col sm:flex-row items-center sm:justify-between mb-5 pb-4 border-b border-dashed border-gray-500">
+    <div class="flex items-center">
+        <img src="images/logo.png" alt="DuitDec Logo"
+            class="h-12 w-auto mr-4 fade-in">
+        <h2 class="text-2xl font-bold text-[#192227] fade-in-delay">DuitDec</h2>
+    </div>
+    <h2 class="font-bold text-2xl text-[#192227] fade-in-delay">Register</h2>
+    <div class="text-gray-500 fade-in-delay">
+        <div>No. CA 53523456</div>
+        <div>12/12/2024</div>   
+    </div>
+</div>
+
+<div class="hidden sm:flex gap-6">
+    <div style="max-width: 12%;" class="font-bold flex flex-col text-[#192227] slide-in">
+        <h2 class="text-lg mb-8 mt-3">Full Name:</h2>
+        <h2 style="margin-top: 6px;" class="text-lg mb-8">E-Mail:</h2>
+        <h2 style="margin-top: 4px;" class="text-lg mb-4">Password:</h2>
+        <h2 style="margin-top: 2px;" class="text-lg">Confirm Password:</h2>
+    </div>
+    <form class="flex flex-col gap-4 flex-grow slide-in-delay">
+        <input type="text" placeholder="Full Name" required
+            class="w-full p-3 border border-gray-500 rounded bg-white text-[#192227] placeholder-gray-500">
+        <input type="email" placeholder="Email" required
+            class="w-full p-3 border border-gray-500 rounded bg-white text-[#192227] placeholder-gray-500">
+        <input type="password" placeholder="Password" required
+            class="w-full p-3 border border-gray-500 rounded bg-white text-[#192227] placeholder-gray-500">
+        <input type="password" placeholder="Confirm Password" required
+            class="w-full p-3 border border-gray-500 rounded bg-white text-[#192227] placeholder-gray-500">
+        <button type="button" onclick="register()"
+            class="bg-[#f9a600] text-white p-3 rounded font-bold transition hover:bg-[#e09500]">
+            Register
+        </button>
+    </form>
+</div>
+
+<div class="flex flex-col sm:hidden gap-4">
+    <form class="flex flex-col gap-4">
+        <div>
+            <label for="fullName" class="block text-[#192227] text-lg mb-2">Full Name:</label>
+            <input type="text" id="fullName" placeholder="Full Name" required
+                class="w-full p-3 border border-gray-500 rounded bg-white text-[#192227] placeholder-gray-500">
+        </div>
+        <div>
+            <label for="email" class="block text-[#192227] text-lg mb-2">E-Mail:</label>
+            <input type="email" id="email" placeholder="Email" required
+                class="w-full p-3 border border-gray-500 rounded bg-white text-[#192227] placeholder-gray-500">
+        </div>
+        <div>
+            <label for="password" class="block text-[#192227] text-lg mb-2">Password:</label>
+            <input type="password" id="password" placeholder="Password" required
+                class="w-full p-3 border border-gray-500 rounded bg-white text-[#192227] placeholder-gray-500">
+        </div>
+        <div>
+            <label for="confirmPassword" class="block text-[#192227] text-lg mb-2">Confirm Password:</label>
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required
+                class="w-full p-3 border border-gray-500 rounded bg-white text-[#192227] placeholder-gray-500">
+        </div>
+        <button type="button" onclick="register()"
+            class="bg-[#f9a600] text-white p-3 rounded font-bold transition hover:bg-[#e09500]">
+            Register
+        </button>
+    </form>
+</div>
+
+<div class="text-center text-[#192227] mt-4 fade-in-delay">
+    Already have an account?
+    <a href="/login" class="text-[#f9a600] underline hover:no-underline">
+        Login
+    </a>
+</div>
+</div>
