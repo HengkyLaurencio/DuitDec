@@ -1,0 +1,55 @@
+<!-- Floating Buttons -->
+<div class="fixed bottom-6 right-6 space-y-3 z-50">
+    <button id="add-income-button" class="w-12 h-12 bg-[#4caf50] text-[#fdfcfc] rounded-full shadow-lg flex items-center justify-center text-2xl">+</button>
+    <button id="add-expense-button" class="w-12 h-12 bg-[#f44336] text-[#fdfcfc] rounded-full shadow-lg flex items-center justify-center text-2xl">−</button>
+  </div>
+  
+  <!-- Main Content -->
+  <main style="height: 800px;" class="flex flex-col lg:flex-row gap-6 p-6 mx-auto bg-[#f9f9f9]">
+    <!-- Filter Section -->
+    <aside style="height: 450px;" class="bg-[#fdfcfc] rounded-lg shadow-md p-6 w-full lg:w-1/3">
+      <h3 style="border-bottom-width: 4px; font-size: 30px;" class="font-semibold text-center text-[#192227] border-b border-[#807e7e] border-dashed pb-3 mb-4">FILTER</h3>
+      <div class="mb-4">
+        <label for="category-filter" class="block font-medium text-[#555]">Category</label>
+        <select id="category-filter" class="w-full p-3 border rounded-md">
+          <option value="">All Categories</option>
+          <optgroup label="Income Categories">
+            <option value="Salary">💼 Salary</option>
+            <option value="Bonus">🎁 Bonus</option>
+            <option value="Interest">💰 Interest</option>
+            <option value="Gifts">🎉 Gifts</option>
+            <option value="Investments">📈 Investments</option>
+          </optgroup>
+          <optgroup label="Expense Categories">
+            <option value="Food">🍽️ Food</option>
+            <option value="Entertainment">🎬 Entertainment</option>
+            <option value="Shopping">🛍️ Shopping</option>
+            <option value="Fuel">⛽ Fuel</option>
+            <option value="Others">🔧 Others</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label for="from-date" class="block font-medium text-[#555]">From</label>
+        <input type="date" id="from-date" class="w-full p-3 border rounded-md" />
+      </div>
+      <div class="mb-4">
+        <label for="to-date" class="block font-medium text-[#555]">To</label>
+        <input type="date" id="to-date" class="w-full p-3 border rounded-md" />
+      </div>
+      <button id="apply-filter-button" class="w-full bg-[#f9a600] hover:bg-[#f9a600]/90 text-[#fdfcfc] font-bold py-2 px-4 rounded-lg">Apply Filter</button>
+    </aside>
+  
+    <!-- Transaction Section -->
+    <section class="bg-[#fdfcfc] rounded-lg shadow-md p-6 flex-1">
+      <header style="border-bottom-width: 4px;"  class="flex justify-between items-center border-b border-[#807e7e] border-dashed pb-3 mb-4">
+        <h3 style="font-size: 30px;" class=" font-semibold text-[#192227]">HISTORY</h3>
+        <div class="flex items-baseline gap-2">
+          <span class="font-medium text-[#555]">Total:</span>
+          <span id="total-amount" class="text-lg font-bold text-[#f9a600]">$0.00</span>
+        </div>
+      </header>
+      <div id="transactions-list" class="h-96 overflow-y-auto space-y-4"></div>
+    </section>
+  </main>
+  
