@@ -1,14 +1,17 @@
 const db = require('../../config/database');
 
 class UserModel {
+
   static async getAllUsers() {
-    const query = 'SELECT id, username, email, created_at, updated_at FROM users';
+    const query =
+      "SELECT id, username, email, created_at, updated_at FROM users";
     const result = await db.query(query);
     return result.rows;
   }
 
   static async getUserById(id) {
-    const query = 'SELECT id, username, email, created_at, updated_at FROM users WHERE id = $1';
+    const query =
+      "SELECT id, username, email, password, created_at, updated_at FROM users WHERE id = $1";
     const result = await db.query(query, [id]);
     return result.rows[0];
   }
@@ -35,7 +38,7 @@ class UserModel {
   }
 
   static async deleteUser(id) {
-    const query = 'DELETE FROM users WHERE id = $1 RETURNING id';
+    const query = "DELETE FROM users WHERE id = $1 RETURNING id";
     const result = await db.query(query, [id]);
     return result.rows[0];
   }
