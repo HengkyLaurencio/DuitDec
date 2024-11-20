@@ -12,4 +12,5 @@ module.exports = {
     host: process.env.HOST,
     database: process.env.DATABASE,
     password: process.env.PASSWORD,
+    secret: process.env.JWT_SECRET,
 };
