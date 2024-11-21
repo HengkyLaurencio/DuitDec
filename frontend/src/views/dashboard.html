@@ -1,96 +1,93 @@
-<div class="flex">
-    <!-- Sidebar -->
-    <aside class="fixed top-0 left-0 h-full w-20 flex flex-col bg-white text-gray-800 p-6 transition-all duration-500 ease-in-out hover:w-72 group">
-      <!-- Logo and App Name -->
-      <div class="flex items-center">
-        <img src="../images/logo.png" alt="logo" class="w-10 rounded-full">
-        <h2 class="ml-4 mt-0 text-xl font-semibold text-gray-900 whitespace-nowrap hidden group-hover:block transition-opacity duration-300">DuitDec</h2>
-      </div>
-    
-      <!-- Main Menu -->
-      <ul class="mt-6 flex-grow overflow-hidden" style="-ms-overflow-style: none; scrollbar-width: none;">
-        <h4 class="text-gray-700 font-medium relative mb-2">
-          <div class="w-full h-px bg-yellow-600 absolute left-0 top-1/2 transition-transform duration-300 ease-in-out"></div>
-        </h4>
-  
-        <!-- Menu Items -->
-        <li class="mt-4">
-          <a href="#!/dashboard/overview" class="flex items-center gap-4 py-3 px-2 text-gray-800 transition-colors duration-300 ease-in-out hover:bg-yellow-500 hover:text-white rounded-md">
-            <span class="material-symbols-outlined">overview</span>
-            <span class="hidden group-hover:block transition-opacity duration-300 ease-in-out">Overview</span>
-          </a>
-        </li>
-        <li>
-          <a href="#!/dashboard/transactions" class="flex items-center gap-4 py-3 px-2 text-gray-800 transition-colors duration-300 ease-in-out hover:bg-yellow-500 hover:text-white rounded-md">
-            <span class="material-symbols-outlined">list</span>
-            <span class="hidden group-hover:block transition-opacity duration-300 ease-in-out">Transaction</span>
-          </a>
-        </li>
-        <li>
-          <a href="#!/dashboard/accounts" class="flex items-center gap-4 py-3 px-2 text-gray-800 transition-colors duration-300 ease-in-out hover:bg-yellow-500 hover:text-white rounded-md">
-            <span class="material-symbols-outlined">account_balance</span>
-            <span class="hidden group-hover:block transition-opacity duration-300 ease-in-out">Accounts</span>
-          </a>
-        </li>
-        <li>
-          <a href="#!/dashboard/creditcards" class="flex items-center gap-4 py-3 px-2 text-gray-800 transition-colors duration-300 ease-in-out hover:bg-yellow-500 hover:text-white rounded-md">
-            <span class="material-symbols-outlined">credit_card</span>
-            <span class="hidden group-hover:block transition-opacity duration-300 ease-in-out">Credit Cards</span>
-          </a>
-        </li>
-        <li>
-          <a href="#!/dashboard/budgets" class="flex items-center gap-4 py-3 px-2 text-gray-800 transition-colors duration-300 ease-in-out hover:bg-yellow-500 hover:text-white rounded-md">
-            <span class="material-symbols-outlined">timelapse</span>
-            <span class="hidden group-hover:block transition-opacity duration-300 ease-in-out">Budgets</span>
-          </a>
-        </li>
-        <li>
-          <a href="#!/dashboard/debts" class="flex items-center gap-4 py-3 px-2 text-gray-800 transition-colors duration-300 ease-in-out hover:bg-yellow-500 hover:text-white rounded-md">
-            <span class="material-symbols-outlined">timer</span>
-            <span class="hidden group-hover:block transition-opacity duration-300 ease-in-out">Debts</span>
-          </a>
-        </li>
-  
-        <!-- Account Section Header -->
-        <h4 class="text-gray-700 font-medium relative mt-4 mb-2">
-          <div class="w-full h-px bg-yellow-600 absolute left-0 top-1/2 transition-transform duration-300 ease-in-out"></div>
-        </h4>
-  
-        <!-- Account Menu Items -->
-        <li class="mt-8">
-          <a href="#!/dashboard/settings" class="flex items-center gap-4 py-3 px-2 text-gray-800 transition-colors duration-300 ease-in-out hover:bg-yellow-500 hover:text-white rounded-md">
-            <span class="material-symbols-outlined">settings</span>
-            <span class="hidden group-hover:block transition-opacity duration-300 ease-in-out">Settings</span>
-          </a>
-        </li>
-        <li>
-          <a href="/index.html" class="flex items-center gap-4 py-3 px-2 text-gray-800 transition-colors duration-300 ease-in-out hover:bg-yellow-500 hover:text-white rounded-md">
-            <span class="material-symbols-outlined">logout</span>
-            <span class="hidden group-hover:block transition-opacity duration-300 ease-in-out">Logout</span>
-          </a>
-        </li>
-      </ul>
+<div class="flex" ng-controller="DashboardController">
+  <!-- Sidebar -->
+  <aside
+    class="fixed top-0 left-0 h-full w-20 flex flex-col bg-white text-gray-800 p-6 transition-all duration-500 ease-in-out hover:w-72 group"
+  >
+    <!-- Logo and App Name -->
+    <div class="flex items-center">
+      <img src="../images/logo.png" alt="logo" class="w-10 rounded-full" />
+      <h2
+        class="ml-4 mt-0 text-xl font-semibold text-gray-900 whitespace-nowrap hidden group-hover:block transition-opacity duration-300"
+      >
+        DuitDec
+      </h2>
+    </div>
+
+    <!-- Main Menu -->
+    <ul class="mt-6 flex-grow overflow-y-auto overflow-hidden" style="-ms-overflow-style: none; scrollbar-width: none;">
+      <h4 class="text-gray-700 font-medium relative mb-2">
+        <div
+          class="w-full h-px bg-yellow-600 absolute left-0 top-1/2 transition-transform duration-300 ease-in-out"
+        ></div>
+      </h4>
+
+      <!-- Menu Items -->
+      <li ng-repeat="menu in menus" class="mt-4">
+        <a
+          ng-href="{{ menu.link }}"
+          class="flex items-center gap-4 py-3 px-2 text-gray-800 transition-colors duration-300 ease-in-out hover:bg-yellow-500 hover:text-white rounded-md"
+        >
+          <span class="material-symbols-outlined">{{ menu.icon }}</span>
+          <span class="hidden group-hover:block transition-opacity duration-300 ease-in-out menu-name whitespace-nowrap">
+            {{ menu.name }}
+          </span>
+        </a>
+      </li>
+
+
+      <!-- Account Section Header -->
+      <h4 class="text-gray-700 font-medium relative mt-4 mb-2">
+        <div
+          class="w-full h-px bg-yellow-600 absolute left-0 top-1/2 transition-transform duration-300 ease-in-out"
+        ></div>
+      </h4>
+
+      <!-- Account Menu Items -->
+      <li ng-repeat="accountMenu in accountMenus" class="mt-8">
+        <a
+          ng-href="{{ accountMenu.link }}"
+          class="flex items-center gap-4 py-3 px-2 text-gray-800 transition-colors duration-300 ease-in-out hover:bg-yellow-500 hover:text-white rounded-md">
+          <span class="material-symbols-outlined">{{ accountMenu.icon }}</span>
+          <span class="hidden group-hover:block transition-opacity duration-300 ease-in-out">
+            {{ accountMenu.name }}
+          </span>
+        </a>
+      </li>
+
+      <button
+        ng-click="logout()"
+        class="mt-1 py-3 px-2 text-gray-800 transition-colors duration-300 ease-in-out hover:bg-yellow-500 hover:text-white rounded-md w-full text-left">
+        <span class="material-symbols-outlined">logout</span>
+        <span class="ml-4">Logout</span>
+       </button> 
       
-      <!-- Profile Section -->
-      <div class="mt-auto transition-all duration-300 ease-in-out hover:bg-white hover:rounded-md">
-        <div class="flex items-center">
-          <img src="../images/profile-img.png" alt="Profile Image" class="w-12 rounded-full border-2 border-white">
-          <div class="ml-6 hidden group-hover:block transition-opacity duration-300 ease-in-out">
-            <h3 class="text-base font-semibold text-gray-800">Irvan Lewenusa</h3>
-            <span class="text-sm font-medium text-gray-600">Admin</span>
-          </div>
+    </ul>
+    <!-- Profile Section -->
+    <div class="mt-auto transition-all duration-300 ease-in-out hover:bg-white hover:rounded-md ">
+      <div class="flex items-center">
+        <img
+          src="../images/profile-img.png"
+          alt="Profile Image"
+          class="w-12 rounded-full border-2 border-white"
+        />
+        <div class="ml-6 hidden group-hover:block transition-opacity duration-300 ease-in-out ">
+          <h3 class="text-base font-semibold text-gray-800">{{ profile.name }}</h3>
+          <span class="text-sm font-medium text-gray-600">{{ profile.email }}</span>
         </div>
       </div>
-    </aside>
-  
-    <!-- Main Area: Konten Utama -->
-    <div class="flex-1 ml-20 p-8 bg-gray-50">
-      <!-- Header Dashboard -->
-      <div class="flex justify-between items-center">
-        <h1 class="text-xl font-bold text-gray-800">Welcome to DuitDec Dashboard</h1>
-      </div>
-  
-      <div ui-view="content"></div>
     </div>
+
+  </aside>
+
+  <!-- Main Area: Konten Utama -->
+  <div class="flex-1 ml-20 p-8 bg-gray-50">
+    <!-- Header Dashboard -->
+    <div class="flex mb-8 justify-between items-center">
+      <h1 class="text-xl font-bold text-gray-800">
+        Welcome back, {{profile.name}}
+      </h1>
+    </div>
+
+    <div ui-view="content"></div>
   </div>
-  
+</div>

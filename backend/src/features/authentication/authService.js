@@ -10,6 +10,7 @@ class AuthService {
     const passCheck = await bcrypt.compare(password, user.password);
     if (user && passCheck) {
       return {
+        id: user.id,
         username: user.username,
         email: user.email,
         token: jwt.sign({ userId: user.id }, data.secret, { expiresIn: "1h" }),
