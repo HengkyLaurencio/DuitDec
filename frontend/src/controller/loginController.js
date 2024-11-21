@@ -1,4 +1,3 @@
-
 angular.module("myApp").controller("LoginController", [
   "$scope",
   "$http",
@@ -16,6 +15,7 @@ angular.module("myApp").controller("LoginController", [
         $http
           .post("http://localhost:3000/api/auth/login/", loginData)
           .then(function (response) {
+            // Jika login berhasil, simpan token dan info pengguna
             const token = response.data.loginSuccess.token;
             localStorage.setItem("authToken", token);
             localStorage.setItem("name", response.data.loginSuccess.username);
@@ -24,10 +24,10 @@ angular.module("myApp").controller("LoginController", [
               `Login Successful! Welcome, ${response.data.loginSuccess.username}`
             );
             window.location.href = "dashboard/overview";
-          }),
-          function (error) {
-            alert(error.data?.message || "Login failed. Please try again.");
-          };
+          })
+          .catch(function (error) {
+            alert(`${error.data.message}`);
+          });
       } else {
         alert("Please fill in both fields!");
       }

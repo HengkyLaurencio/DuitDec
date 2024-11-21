@@ -9,7 +9,7 @@ class AuthController {
       const user = await AuthModel.getUserByEmail(email);
       const loginSuccess = await AuthService.checkCredentials(email, password);
       if (!loginSuccess) {
-        return res.status(400).json({ message: "Login Failed!" });
+        return res.status(400).json({ message: "Wrong Email or Password!" });
       }
       res.json({ loginSuccess });
     } catch (error) {
