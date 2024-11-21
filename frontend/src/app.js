@@ -1,11 +1,11 @@
-var app = angular.module('myApp', ['ui.router']);
+var app = angular.module("myApp", ["ui.router"]);
 
 app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
-    $locationProvider.html5Mode(true);
+  $locationProvider.html5Mode(true);
 
-    $urlRouterProvider.otherwise('/home');
+  $urlRouterProvider.otherwise("/home");
 
-    $stateProvider
+  $stateProvider
         .state('home', {
             url: '/home',
             templateUrl: 'views/home.html',
@@ -53,12 +53,12 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
         })
 });
 
-app.controller('HomeController', function ($scope) {
-    $scope.message = 'Welcome to the Home Page!';
+app.controller("HomeController", function ($scope) {
+  $scope.message = "Welcome to the Home Page!";
 });
 
-app.controller('AboutController', function ($scope) {
-    $scope.message = 'This is the About Page!';
+app.controller("AboutController", function ($scope) {
+  $scope.message = "This is the About Page!";
 });
 
 app.controller('DashboardController', function ($scope) {
@@ -68,3 +68,4 @@ app.controller('DashboardController', function ($scope) {
 app.controller('OverviewController', function ($scope) {
     $scope.message = 'Here is the Overview of your financial data!';
 });
+
