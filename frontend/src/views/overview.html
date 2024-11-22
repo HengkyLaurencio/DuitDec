@@ -1,5 +1,98 @@
-<div class="bg-white p-6 rounded-md shadow-lg">
-    <h2 class="text-2xl font-bold text-gray-800 mb-4">Dashboard Overview</h2>
-    <p class="text-gray-600">Here is the overview of your financial data.</p>
+<style>
+  #chart-this-month, #chart-last-month {
+    width: 140px !important;
+    height: 140px !important;
+  }
+</style>
+<div class="mt-8 space-y-8">
+  <!-- Row 1: Summary, This Month, Last Month -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+    <!-- Summary Card -->
+    <div class="p-6 bg-white rounded-2xl shadow-lg">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">Summary</h3>
+      <div class="flex justify-between">
+        <p>Balance:</p>
+        <p class="text-green-500 font-bold">{{ summary.balance | currency }}</p>
+      </div>
+      <div class="flex justify-between">
+        <p>Credit Cards:</p>
+        <p class="text-red-500 font-bold">{{ summary.creditCards | currency }}</p>
+      </div>
+      <hr class="my-4">
+      <div class="text-right font-bold text-green-500">
+        {{ summary.total | currency }}
+      </div>
+    </div>
+
+    <!-- This Month Card -->
+    <div class="p-6 bg-white rounded-2xl shadow-lg">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">This Month</h3>
+      <div class="flex justify-center">
+        <canvas id="chart-this-month" class="w-16 h-16"></canvas>
+      </div>
+      <div class="mt-4 space-y-2">
+        <div class="flex justify-between">
+          <p>Income:</p>
+          <p class="text-green-500 font-bold">{{ thisMonth.income | currency }}</p>
+        </div>
+        <div class="flex justify-between">
+          <p>Outcome:</p>
+          <p class="text-red-500 font-bold">{{ thisMonth.outcome | currency }}</p>
+        </div>
+        <hr class="my-4">
+        <div class="text-right font-bold text-green-500">
+          {{ thisMonth.total | currency }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Last Month Card -->
+    <div class="p-6 bg-white rounded-2xl shadow-lg">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">Last Month</h3>
+      <div class="flex justify-center">
+        <canvas id="chart-last-month" class="w-16 h-16"></canvas>
+      </div>
+      <div class="mt-4 space-y-2">
+        <div class="flex justify-between">
+          <p>Income:</p>
+          <p class="text-green-500 font-bold">{{ lastMonth.income | currency }}</p>
+        </div>
+        <div class="flex justify-between">
+          <p>Outcome:</p>
+          <p class="text-red-500 font-bold">{{ lastMonth.outcome | currency }}</p>
+        </div>
+        <hr class="my-4">
+        <div class="text-right font-bold text-green-500">
+          {{ lastMonth.total | currency }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2: Accounts -->
+  <div class="p-6 bg-white rounded-2xl shadow-lg">
+    <h3 class="text-xl font-semibold text-gray-800 mb-4">Accounts</h3>
+    <div class="space-y-4">
+      <div class="flex justify-between" ng-repeat="account in accounts">
+        <p>{{ account.name }}</p>
+        <p class="text-green-500 font-bold">{{ account.balance | currency }} {{ account.currency }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 3: Credit Cards -->
+  <div class="p-6 bg-white rounded-2xl shadow-lg">
+    <h3 class="text-xl font-semibold text-gray-800 mb-4">Credit Cards</h3>
+    <div class="space-y-4">
+      <div class="flex justify-between" ng-repeat="card in creditCards">
+        <p>{{ card.name }}</p>
+        <p class="text-red-500 font-bold">{{ card.balance | currency }} {{ card.currency }}</p>
+      </div>
+    </div>
+    <div class="w-full mt-2 bg-gray-200 rounded-full h-2">
+      <div class="bg-red-500 h-full rounded-full"
+           style="width: 10%">
+      </div>
+    </div>
+  </div>
 </div>
-  

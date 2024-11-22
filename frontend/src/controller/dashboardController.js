@@ -10,8 +10,7 @@ angular.module("myApp").controller("DashboardController", [
       return;
     }
     const id = localStorage.getItem("id");
-    $http
-      .get(`http://localhost:3000/api/users/${id}`, {
+    $http.get(`http://localhost:3000/api/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
@@ -22,7 +21,7 @@ angular.module("myApp").controller("DashboardController", [
 
         $scope.menus = [
           { name: "Overview", icon: "overview", link: "dashboard/overview" },
-          
+
           {
             name: "Transaction",
             icon: "list",
@@ -40,7 +39,7 @@ angular.module("myApp").controller("DashboardController", [
           },
           { name: "Budgets", icon: "timelapse", link: "/dashboard/budgets" },
           { name: "Debts", icon: "timer", link: "/dashboard/debts" },
-        ];
+          ];
 
         $scope.accountMenus = [
           { name: "Settings", icon: "settings", link: "/dashboard/settings" },
@@ -51,10 +50,10 @@ angular.module("myApp").controller("DashboardController", [
         // $location.path("/login"); 
       });
 
-       $scope.logout = function () {
+      $scope.logout = function () {
          localStorage.removeItem("authToken");
          localStorage.removeItem("id");
          $location.path("/login");
-       };
+      };
   },
 ]);
