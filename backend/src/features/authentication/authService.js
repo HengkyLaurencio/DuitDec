@@ -9,8 +9,13 @@ class AuthService {
     const user = await AuthModel.getUserByEmail(email);
     const passCheck = await bcrypt.compare(password, user.password);
     if (user && passCheck) {
+      console.log("User authenticated:", {
+        user_id: user.user_id,
+        username: user.username,
+        email: user.email,
+      });
       return {
-        id: user.id,
+        user_id: user.user_id,
         username: user.username,
         email: user.email,
         token: jwt.sign({ userId: user.id }, data.secret, { expiresIn: "1h" }),

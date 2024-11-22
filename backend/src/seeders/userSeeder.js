@@ -23,7 +23,7 @@ async function seedUsers() {
       const query = `
         INSERT INTO users (username, email, password)
         VALUES ($1, $2, $3)
-        RETURNING id, username, email, created_at, updated_at
+        RETURNING user_id, username, email, created_at, updated_at
       `;
       const result = await db.query(query, [user.username, user.email, user.password]);
       console.log('User seeded:', result.rows[0]);
