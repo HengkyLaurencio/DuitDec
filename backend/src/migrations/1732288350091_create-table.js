@@ -79,10 +79,6 @@ exports.up = (pgm) => {
     notes: {
       type: "text",
     },
-    total: {
-      type: "decimal(10, 2)",
-      notNull: true,
-    },
     date: {
       type: "timestamp",
       notNull: true,
@@ -106,10 +102,6 @@ exports.up = (pgm) => {
       notNull: true,
     },
     balance: {
-      type: "decimal(10, 2)",
-      notNull: true,
-    },
-    total: {
       type: "decimal(10, 2)",
       notNull: true,
     },
@@ -217,10 +209,6 @@ exports.up = (pgm) => {
     },
     account_name: {
       type: "varchar(50)",
-      notNull: true,
-    },
-    total: {
-      type: "decimal(10, 2)",
       notNull: true,
     },
   });
