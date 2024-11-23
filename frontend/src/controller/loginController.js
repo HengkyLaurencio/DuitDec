@@ -15,11 +15,10 @@ angular.module("myApp").controller("LoginController", [
         $http
           .post("http://localhost:3000/api/auth/login/", loginData)
           .then(function (response) {
-            // Jika login berhasil, simpan token dan info pengguna
             const token = response.data.loginSuccess.token;
             localStorage.setItem("authToken", token);
             localStorage.setItem("name", response.data.loginSuccess.username);
-            localStorage.setItem("id", response.data.loginSuccess.id);
+            localStorage.setItem("id", response.data.loginSuccess.user_id);
             alert(
               `Login Successful! Welcome, ${response.data.loginSuccess.username}`
             );
