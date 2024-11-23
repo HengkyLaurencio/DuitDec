@@ -1,7 +1,6 @@
 const AuthService = require("./authService");
 const AuthModel = require("./authRepository");
 
-
 class AuthController {
   static async login(req, res, next) {
     const { email, password } = req.body;
@@ -15,8 +14,6 @@ class AuthController {
     } catch (error) {
       return next(error);
     }
-  } 
-  
+  }
 }
 module.exports = AuthController;
-
