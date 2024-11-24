@@ -6,6 +6,7 @@ const data = require("../../config/env");
 class AuthService {
   
   static async checkCredentials(email, password) {
+    try{
     const user = await AuthModel.getUserByEmail(email);
     const passCheck = await bcrypt.compare(password, user.password);
     if (user && passCheck) {
@@ -22,6 +23,9 @@ class AuthService {
       };
     }
     return null;
+  }catch(error){
+    console.log(error);
+  }
   }
   
 }
