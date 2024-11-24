@@ -7,6 +7,6 @@ app.use(express.json());
 
 router.post("/income", TransactionsController.addIncome)
 router.post("/outcome", TransactionsController.addOutcome)
-// router.get("/",TransactionsController.getTransactions)
+router.get("/",TransactionsController.getTransactions)
 
 module.exports = router;

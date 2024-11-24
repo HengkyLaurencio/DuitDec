@@ -12,6 +12,19 @@ class transactionsRepository {
         const { rows } = await db.query(query, [user_id, transaction_type, category_id, amount, notes, date]);
         return rows[0]; 
     }
+
+    static async findAll(filters){
+            const { user_id, category_id, date_from, date_to } = filters;
+    
+            let query = `
+              SELECT transaction_id, user_id, transaction_type, category_id, amount, notes, date 
+              FROM transactions 
+              WHERE 1=1
+            `;
+    
+            const { rows } = await db.query(query);
+            return rows; 
+        }
 }
 
 module.exports = transactionsRepository;

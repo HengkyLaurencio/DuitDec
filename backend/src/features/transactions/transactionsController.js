@@ -29,6 +29,18 @@ class TransactionsController {
             res.status(500).json({ message: error.message });
         }
     }
+
+    static async getTransactions(req, res) {
+        try {
+            const userId = req.query.user_id; 
+
+            const transactions = await TransactionsRepository.findAll({ user_id: userId });
+            return res.status(200).json({ transactions });
+        } catch (error) {
+            console.error("Error fetching transactions:", error);
+            return res.status(500).json({ message: "An error occurred while fetching transactions" });
+        }
+    }
 }
   
 module.exports = TransactionsController;
