@@ -7,6 +7,7 @@ const port = 3000;
 const userRoutes = require('./features/user/userRoute');
 const authRoutes = require('./features/authentication/authRoute');
 const accRoutes = require('./features/overview/accRoute');
+const transactionsRoutes = require('./features/transactions/transactionsRoute');
 
 //cors
 const corsOptions = {
@@ -26,6 +27,7 @@ app.use(
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/user/accounts', accRoutes);
+app.use('/api/transactions', transactionsRoutes);
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`);
