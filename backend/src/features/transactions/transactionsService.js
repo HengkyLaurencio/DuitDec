@@ -21,6 +21,21 @@ class TransactionsService {
   static async getCategoryById(){
     return await TransactionsRepository.getCategoryById(category_id)
   }
+
+  static async updateTransaction(transaction_id, category_id,
+    amount,
+    notes,
+    date) {
+    try {
+      const result = await TransactionsRepository.updateTransaction(transaction_id, category_id,
+        amount,
+        notes,
+        date);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = TransactionsService;

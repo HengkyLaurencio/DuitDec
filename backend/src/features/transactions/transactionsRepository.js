@@ -45,6 +45,36 @@ class transactionsRepository {
       throw error;
     }
   }
+
+  static async updateTransaction(
+    transaction_id,
+    category_id,
+        amount,
+        notes,
+        date
+  ) {
+    const query = `
+      UPDATE transactions 
+      SET category_id = $2, amount = $3, notes = $4, date = $5
+      WHERE transaction_id = $1 
+      RETURNING 
+        user_id,
+        transaction_type,
+        category_id, 
+        amount, 
+        notes, 
+        date
+    `;
+
+    const { rows } = await db.query(query, [
+      transaction_id,
+      category_id,
+      amount,
+      notes,
+      date,
+    ]);
+    return rows[0];
+  }
 }
 
 module.exports = transactionsRepository;
