@@ -5,8 +5,8 @@ const TransactionsController = require("./transactionsController");
 
 app.use(express.json());
 
-router.post("/income", TransactionsController.addIncome)
-router.post("/outcome", TransactionsController.addOutcome)
-router.get("/",TransactionsController.getTransactions)
+router.post("/income/:id", TransactionsController.addIncome);
+router.post("/outcome/:id", TransactionsController.addOutcome);
+router.get("/:id", TransactionsController.getTransactionsById);
 
 module.exports = router;
