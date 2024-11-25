@@ -31,6 +31,20 @@ class transactionsRepository {
     const { rows } = await db.query(query, [id]);
     return rows;
   }
+
+  static async getCategoryById(category_id) {
+    try {
+      const query = `
+        SELECT category_id
+        FROM categories
+        WHERE category_id = $1
+      `;
+      const { rows } = await db.query(query, [category_id]);
+      return rows[0];
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = transactionsRepository;

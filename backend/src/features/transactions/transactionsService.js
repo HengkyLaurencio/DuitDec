@@ -17,6 +17,10 @@ class TransactionsService {
   static async findTransactionsById(id) {
     return await TransactionsRepository.findTransactionsById(id);
   }
+
+  static async getCategoryById(){
+    return await TransactionsRepository.getCategoryById(category_id)
+  }
 }
 
 module.exports = TransactionsService;
