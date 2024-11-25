@@ -1,8 +1,8 @@
 const CategoryRepository = require("./categoryRepository");
 
 class CategoryService {
-  static async addTransaction(transactionData) {
-
+  static async getAllCategory() {
+    return await CategoryRepository.findAll();
   }
 }
 

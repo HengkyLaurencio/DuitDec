@@ -8,6 +8,7 @@ const userRoutes = require('./features/user/userRoute');
 const authRoutes = require('./features/authentication/authRoute');
 const accRoutes = require('./features/overview/accRoute');
 const transactionsRoutes = require('./features/transactions/transactionsRoute');
+const categoryRoutes = require('./features/category/categoryRoute');
 
 //cors
 const corsOptions = {
@@ -28,6 +29,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/user/accounts', accRoutes);
 app.use('/api/transactions', transactionsRoutes);
+app.use('/api/category', categoryRoutes);
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`);
