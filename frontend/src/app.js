@@ -16,21 +16,6 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
       templateUrl: "views/about.html",
       controller: "AboutController",
     })
-    .state("dashboard", {
-      url: "/dashboard",
-      templateUrl: "views/dashboard.html",
-      controller: "DashboardController",
-      abstract: true,
-    })
-    .state("dashboard.overview", {
-      url: "/overview",
-      views: {
-        "content@dashboard": {
-          templateUrl: "views/overview.html",
-          controller: "OverviewController",
-        },
-      },
-    })
     .state("login", {
       url: "/login",
       templateUrl: "views/login.html",
@@ -51,21 +36,55 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
       templateUrl: "views/settings.html",
       controller: "SettingsController",
     })
+    .state("dashboard", {
+      url: "/dashboard",
+      templateUrl: "views/dashboard.html",
+      controller: "DashboardController",
+      abstract: true,
+    })
+    .state("dashboard.overview", {
+      url: "/overview",
+      views: {
+        "content@dashboard": {
+          templateUrl: "views/overview.html",
+          controller: "OverviewController",
+        },
+      },
+    })
+    .state("dashboard.transactions", {
+      url: "/transactions",
+      views: {
+        "content@dashboard": {
+          templateUrl: "views/transaction.html",
+          controller: "transactionController",
+        },
+      },
+    })
+    .state("dashboard.settings", {
+      url: "/settings",
+      views: {
+        "content@dashboard": {
+          templateUrl: "views/settings.html",
+          controller: "transactionController",
+        },
+      },
+    })
+    .state("dashboard.budgets", {
+      url: "/budgets",
+      views: {
+        "content@dashboard": {
+          templateUrl: "views/budget.html",
+          controller: "transactionController",
+        },
+      },
+    })
+    .state("dashboard.debts", {
+      url: "/debts",
+      views: {
+        "content@dashboard": {
+          templateUrl: "views/debt.html",
+          controller: "debtController",
+        },
+      },
+    })
 });
-
-app.controller("HomeController", function ($scope) {
-  $scope.message = "Welcome to the Home Page!";
-});
-
-app.controller("AboutController", function ($scope) {
-  $scope.message = "This is the About Page!";
-});
-
-app.controller('DashboardController', function ($scope) {
-    $scope.message = 'Welcome to the Dashboard!';
-});
-
-app.controller('OverviewController', function ($scope) {
-    $scope.message = 'Here is the Overview of your financial data!';
-});
-
