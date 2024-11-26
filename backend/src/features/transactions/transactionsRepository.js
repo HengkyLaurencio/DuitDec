@@ -74,6 +74,12 @@ class transactionsRepository {
     ]);
     return rows[0];
   }
+
+  static async deleteTransaction(transactionId) {
+    const query = "DELETE FROM transactions WHERE transaction_id = $1 RETURNING transaction_id";
+    const { rows } = await db.query(query, [transactionId]);
+    return rows[0];
+  }
 }
 
 module.exports = transactionsRepository;

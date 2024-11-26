@@ -87,6 +87,19 @@ class TransactionsController {
       res.status(500).json({ message: error.message });
     }
   }
+
+  static async deleteTransactionsById(req, res) {
+    try {
+      const { transactionId } = req.params;
+      const deletedTransactions = await TransactionsService.deleteTransaction(transactionId);
+      if (!deletedTransactions) {
+        return res.status(404).json({ message: 'Transactions not found' });
+      }
+      res.status(200).json({ message: 'Transactions deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error deleting Transactions', error });
+    }
+  }
 }
 
 module.exports = TransactionsController;
