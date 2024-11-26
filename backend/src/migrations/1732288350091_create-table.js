@@ -80,9 +80,8 @@ exports.up = (pgm) => {
       type: "text",
     },
     date: {
-      type: "timestamp",
+      type: "date",
       notNull: true,
-      default: pgm.func("current_timestamp"),
     },
   });
 

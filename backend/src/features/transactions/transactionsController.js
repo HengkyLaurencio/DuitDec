@@ -59,7 +59,7 @@ class TransactionsController {
 
   static async editTransactionsById(req, res) {
     try {
-      const { transaction_id } = req.params;
+      const { transactionId } = req.params;
       const { category_id, amount, notes, date } = req.body;
 
       const category = await TransactionsRepository.getCategoryById(category_id);
@@ -67,13 +67,12 @@ class TransactionsController {
         return res.status(404).json({ message: "Category not found" });
       }
 
-      // Check if transaction exists
-      const existingTransaction = await TransactionsRepository.findTransactionsById(transaction_id);
+      const existingTransaction = await TransactionsRepository.findTransactionsById(transactionId);
       if (!existingTransaction) {
         return res.status(404).json({ message: "Transaction not found" });
       }
 
-      const result = await TransactionsService.updateTransaction(transaction_id,
+      const result = await TransactionsService.updateTransaction(transactionId,
         category_id,
         amount,
         notes,
