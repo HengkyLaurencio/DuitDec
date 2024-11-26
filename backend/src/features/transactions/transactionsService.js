@@ -36,6 +36,11 @@ class TransactionsService {
       throw error;
     }
   }
+
+  static async deleteTransaction(transactionId) {
+      const result = await TransactionsRepository.deleteTransaction(transactionId);
+      return result;
+  }
 }
 
 module.exports = TransactionsService;

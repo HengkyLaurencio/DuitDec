@@ -55,7 +55,7 @@ class transactionsRepository {
   ) {
     const query = `
       UPDATE transactions 
-      SET category_id = $2, amount = $3, notes = $4, date = $5
+      SET category_id = $2, amount = $3, notes = $4, date = $5 
       WHERE transaction_id = $1 
       RETURNING 
         user_id,
@@ -65,7 +65,6 @@ class transactionsRepository {
         notes, 
         date
     `;
-
     const { rows } = await db.query(query, [
       transaction_id,
       category_id,
@@ -73,6 +72,12 @@ class transactionsRepository {
       notes,
       date,
     ]);
+    return rows[0];
+  }
+
+  static async deleteTransaction(transactionId) {
+    const query = "DELETE FROM transactions WHERE transaction_id = $1 RETURNING transaction_id";
+    const { rows } = await db.query(query, [transactionId]);
     return rows[0];
   }
 }
