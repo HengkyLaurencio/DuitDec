@@ -45,6 +45,7 @@ DuitDec adalah aplikasi manajemen uang yang membantu pengguna mengelola keuangan
    - **`PASSWORD`**: Kata sandi untuk mengakses database PostgreSQL.
    - **`DATABASE_URL`**: URL koneksi lengkap ke database dalam format PostgreSQL, seperti:  
      `postgres://your_db_user:your_db_password@localhost:5432/your_db_name`.
+   - **`JWT_SECRET`**: Secret Key untuk enkripsi token authentication.
 
 4. **Menjalankan Migrations**: Pastikan database sudah dikonfigurasi, lalu jalankan migrations untuk membuat tabel di database:
     ```bash
