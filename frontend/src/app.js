@@ -56,7 +56,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
       views: {
         "content@dashboard": {
           templateUrl: "views/transaction.html",
-          controller: "transactionController",
+          controller: "transactionsController",
         },
       },
     })
@@ -74,7 +74,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
       views: {
         "content@dashboard": {
           templateUrl: "views/settings.html",
-          controller: "transactionController",
+          controller: "",
         },
       },
     })
@@ -83,7 +83,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
       views: {
         "content@dashboard": {
           templateUrl: "views/budget.html",
-          controller: "transactionController",
+          controller: "",
         },
       },
     })
