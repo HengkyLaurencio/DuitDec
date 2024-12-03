@@ -60,6 +60,15 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
         },
       },
     })
+    .state("dashboard.accounts", {
+      url: "/accounts",
+      views: {
+        "content@dashboard": {
+          templateUrl: "views/accounts.html",
+          controller: "accountsController",
+        },
+      },
+    })
     .state("dashboard.settings", {
       url: "/settings",
       views: {

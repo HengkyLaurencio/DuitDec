@@ -6,7 +6,7 @@ const port = 3000;
 
 const userRoutes = require('./features/user/userRoute');
 const authRoutes = require('./features/authentication/authRoute');
-const accRoutes = require('./features/overview/accRoute');
+const accRoutes = require('./features/accounts/accRoute');
 const transactionsRoutes = require('./features/transactions/transactionsRoute');
 const categoryRoutes = require('./features/category/categoryRoute');
 
@@ -30,6 +30,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/user/accounts', accRoutes);
 app.use('/api/transactions', transactionsRoutes);
 app.use('/api/category', categoryRoutes);
+app.use('/api/accounts', accRoutes);
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`);
