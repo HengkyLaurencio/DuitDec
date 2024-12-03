@@ -32,6 +32,8 @@ app.use('/api/user/accounts', accRoutes);
 app.use('/api/transactions', transactionsRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/debts', debtRoutes);
+app.use('/api/accounts', accRoutes);
+
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`);
