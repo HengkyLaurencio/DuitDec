@@ -1,5 +1,5 @@
-<div class="main flex w-full mt-14 gap-5 py-5">
-    <div class="filter-container bg-white p-5 w-64 rounded-lg">
+<div ng-app="myApp" ng-controller="debtController" class="main flex w-full gap-5 py-5">
+    <div class="bg-white p-5 w-64 rounded-lg" style="height: auto; flex-shrink: 0; max-height: fit-content;">
         <div class="filter-title text-lg font-bold mb-4">FILTER</div>
         <form class="filter-form">
             <label for="orderBy" class="block mb-2">Order by</label>
@@ -19,54 +19,89 @@
 
             <div class="button-container mt-4">
                 <button type="button"
-                    class="cancel-btn bg-[#f9a600] text-white border-none p-2 w-full rounded cursor-pointer hover:bg-[#f9a600]">
+                        class="cancel-btn bg-[#f9a600] text-white border-none p-2 w-full rounded cursor-pointer hover:bg-[#f9a600]"
+                        ng-click="cancel()">
                     CANCEL
                 </button>
             </div>
         </form>
     </div>
 
-    <div class="budgets-container flex-grow">
-        <div class="budget-card bg-white border border-gray-300 p-4 mb-4 rounded-lg">
+    <div class="budgets-container flex-grow mb-20">
+        <!-- ng-repeat to dynamically render budget cards -->
+        <div ng-repeat="budget in budgets" class="budget-card bg-white border border-gray-300 p-4 mb-4 rounded-lg">
             <div class="budget-header flex items-center justify-between font-bold">
-                <span class="material-symbols-outlined budget-icon mr-2">account_balance</span>
-                Debt: Frank ➔ You
-                <span class="date-range text-sm text-gray-500">2024-10-10 - 2024-10-24</span>
+                <span class="material-symbols-outlined budget-icon mr-2">{{budget.icon}}</span>
+                {{budget.type}}: {{budget.participants}}
+                <span class="date-range text-sm text-gray-500">{{budget.dateRange}}</span>
             </div>
             <div class="progress-container bg-gray-200 h-2 rounded my-3">
-                <div class="progress-bar bg-red-500 h-full rounded" style="width: 33%;"></div>
+                <div class="progress-bar bg-{{budget.color}} h-full rounded" style="width: {{budget.progress}}%;"></div>
             </div>
             <div class="amount-edit-row flex justify-between items-center mb-2">
-                <div class="amount text-base">$100.00 / $300.00</div>
+                <div class="amount text-base">{{budget.currentAmount}} / {{budget.totalAmount}}</div>
                 <div class="actions flex gap-2">
                     <button
                         class="edit-btn bg-[#f9a600] text-white p-2 rounded cursor-pointer text-sm flex items-center gap-1 hover:bg-[#f9a600]">
-                        <span class="material-symbols-outlined">edit</span> Edit
+                        <span class="material-symbols-outlined">edit</span>
                     </button>
                 </div>
             </div>
-            <div class="residual text-red-500 font-bold">Residual amount: $200.00</div>
-        </div>
-
-        <div class="budget-card bg-white border border-gray-300 p-4 mb-4 rounded-lg">
-            <div class="budget-header flex items-center justify-between font-bold">
-                <span class="material-symbols-outlined budget-icon mr-2">credit_card</span>
-                Credit: You ➔ Sam
-                <span class="date-range text-sm text-gray-500">2024-10-10 - 2024-10-24</span>
-            </div>
-            <div class="progress-container bg-gray-200 h-2 rounded my-3">
-                <div class="progress-bar bg-red-500 h-full rounded" style="width: 0%;"></div>
-            </div>
-            <div class="amount-edit-row flex justify-between items-center mb-2">
-                <div class="amount text-base">$100.00 / $300.00</div>
-                <div class="actions flex gap-2">
-                    <button
-                        class="edit-btn bg-[#f9a600] text-white p-2 rounded cursor-pointer text-sm flex items-center gap-1 hover:bg-[#f9a600]">
-                        <span class="material-symbols-outlined">edit</span> Edit
-                    </button>
-                </div>
-            </div>
-            <div class="residual text-red-500 font-bold">Residual amount: $200.00</div>
+            <div class="residual">Residual amount: <span class="text-{{budget.color}} font-bold">{{budget.residual}}</span></div>
         </div>
     </div>
+
+    <!-- Floating Buttons -->
+    <div class="fixed bottom-5 right-5 flex flex-col gap-2 z-[999]">
+        <button ng-click="openModal('credit')" class="w-16 h-16 bg-green-600 text-white text-2xl rounded-full shadow-lg hover:bg-green-700">
+            +
+        </button>
+        <button ng-click="openModal('debt')" class="w-16 h-16 bg-red-600 text-white text-2xl rounded-full shadow-lg hover:bg-red-700">
+            −
+        </button>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="hidden fixed inset-0 z-[10000] bg-black bg-opacity-50 animate-fade-in">
+        <div class="bg-white mx-auto my-20 p-5 rounded-lg w-1/2 max-w-lg max-h-[80vh] shadow-lg overflow-y-auto">
+            <h2 id="modal-title" class="text-center text-xl font-bold mb-5">
+                Add New {{ modalData.debt_type === 'debt' ? 'Debt' : 'Credit' }}
+            </h2>
+            
+            <form ng-submit="submitForm()" class="space-y-4">
+                <div>
+                    <label for="person" class="block font-bold mb-1">Person</label>
+                    <input type="text" id="person" ng-model="modalData.name" placeholder="Enter person's name" required
+                        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300">
+                </div>
+
+                <div>
+                    <label for="amount" class="block font-bold mb-1">Amount ($)</label>
+                    <input type="number" id="amount" ng-model="modalData.amount" required
+                        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300">
+                </div>
+
+                <div>
+                    <label for="dateStart" class="block font-bold mb-1">Date Start</label>
+                    <input type="date" id="dateStart" ng-model="modalData.date_start" required
+                        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300">
+                </div>
+
+                <div>
+                    <label for="dateEnd" class="block font-bold mb-1">Date End</label>
+                    <input type="date" id="dateEnd" ng-model="modalData.date_end" required
+                        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300">
+                </div>
+
+                <div class="flex justify-between gap-4">
+                    <button type="button" ng-click="closeModal()" class="w-full px-4 py-2 bg-gray-200 text-gray-600 rounded-md hover:bg-gray-300">
+                        CANCEL
+                    </button>
+                    <button type="submit" class="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                        SAVE
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>    
 </div>

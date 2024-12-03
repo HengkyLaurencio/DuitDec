@@ -8,7 +8,10 @@ module.exports = {
         },
         fontFamily: {
           'poppins': ['Poppins', 'system-ui', 'Helvetica', 'Arial', 'sans-serif'],
-        }
+        },
+        animation: {
+          'fade-in': 'fadeIn 0.5s ease-out forwards',
+      },
     },
 },
   plugins: [],
