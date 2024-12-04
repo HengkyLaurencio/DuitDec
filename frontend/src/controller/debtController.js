@@ -55,7 +55,6 @@ angular.module('myApp').controller('debtController', [
 
         // Call refreshDebts initially to load the data
         $scope.refreshDebts();
-
         // Cancel button functionality
         $scope.cancel = function () {
             alert("Cancel action triggered");

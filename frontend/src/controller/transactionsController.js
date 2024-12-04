@@ -1,133 +1,163 @@
-// Transaction Controller
 angular.module("myApp").controller("transactionsController", [
-    "$scope",
-    function ($scope) {
-      let transactions = [];
-      let totalAmount = 0;
-  
-      const categoryMap = {
-        "💼 Salary": "Salary",
-        "🎁 Bonus": "Bonus", 
-        "💰 Interest": "Interest",
-        "🎉 Gifts": "Gifts",
-        "📈 Investments": "Investments",
-        "🍽️ Food": "Food",
-        "🎬 Entertainment": "Entertainment",
-        "🛍️ Shopping": "Shopping",
-        "⛽ Fuel": "Fuel",
-        "🔧 Others": "Others"
+  "$scope", "$http",
+  function ($scope, $http) {
+    // Initialize transactions and totals
+    $scope.transactionsToShow = [];
+    $scope.totalAmount = 0;
+    $scope.isModalVisible = false;
+    $scope.modalTitle = "";
+    $scope.categories = [];
+    
+    // Initialize filter models
+    $scope.categoryFilter = "";
+    $scope.fromDate = null;
+    $scope.toDate = null;
+
+    const categoryMap = {
+      "💼 Salary": "Salary",
+      "🎁 Bonus": "Bonus",
+      "💰 Interest": "Interest",
+      "🎉 Gifts": "Gifts",
+      "📈 Investments": "Investments",
+      "🍽️ Food": "Food",
+      "🎬 Entertainment": "Entertainment",
+      "🛍️ Shopping": "Shopping",
+      "⛽ Fuel": "Fuel",
+      "🔧 Others": "Others"
+    };
+
+    const incomeCategories = Object.keys(categoryMap).filter(key =>
+      ["Salary", "Bonus", "Interest", "Gifts", "Investments"].includes(categoryMap[key])
+    );
+    const expenseCategories = Object.keys(categoryMap).filter(key =>
+      ["Food", "Entertainment", "Shopping", "Fuel", "Others"].includes(categoryMap[key])
+    );
+
+    // Initialize modal data with current date
+    function initializeModalData() {
+      return {
+        selectedCategory: "",
+        transactionAmount: null,
+        transactionDate: "",
+        transactionNotes: ""
       };
-  
-      const incomeCategories = Object.keys(categoryMap).filter(key =>
-        ["Salary", "Bonus", "Interest", "Gifts", "Investments"].includes(categoryMap[key])
-      );
-      const expenseCategories = Object.keys(categoryMap).filter(key =>
-        ["Food", "Entertainment", "Shopping", "Fuel", "Others"].includes(categoryMap[key])
-      );
-  
-      // Default category options
-      $scope.categoryOptions = [...incomeCategories, ...expenseCategories];
-      $scope.selectedCategory = "";
-      $scope.transactionAmount = 0;
-      $scope.transactionDate = "";
-      $scope.transactionNotes = "";
-  
-      // Modal visibility
-      $scope.isModalVisible = false;
-      $scope.modalTitle = "";
-  
-      // Open Add Income Modal
-      $scope.openAddIncomeModal = function() {
-        $scope.modalTitle = "Add Income";
-        $scope.categoryOptions = incomeCategories;
-        $scope.isModalVisible = true;
-        $scope.setupTransactionForm(true);
-      };
-  
-      // Open Add Expense Modal
-      $scope.openAddExpenseModal = function() {
-        $scope.modalTitle = "Add Expense";
-        $scope.categoryOptions = expenseCategories;
-        $scope.isModalVisible = true;
-        $scope.setupTransactionForm(false);
-      };
-  
-      // Close Modal
-      $scope.closeModal = function() {
-        $scope.isModalVisible = false;
-      };
-  
-      // Setup transaction form (income or expense)
-      $scope.setupTransactionForm = function(isIncome) {
-        $scope.isIncome = isIncome;
-      };
-  
-      // Add Transaction
-      $scope.addTransaction = function() {
-        const category = $scope.selectedCategory;
-        const amount = parseFloat($scope.transactionAmount);
-        const date = $scope.transactionDate;
-        const notes = $scope.transactionNotes;
-  
-        if (!category || isNaN(amount) || !date) {
-          alert("Please fill all required fields.");
-          return;
-        }
-  
-        const standardizedCategory = categoryMap[category] || category;
-  
-        const newTransaction = {
-          category: standardizedCategory,
-          amount,
-          date,
-          notes,
-          type: $scope.isIncome ? "income" : "expense"
-        };
-  
-        transactions.push(newTransaction);
-        totalAmount += $scope.isIncome ? amount : -amount;
-  
-        $scope.updateTransactionList();
-        $scope.resetForm();
-        $scope.closeModal();
-      };
-  
-      // Update Transaction List
-      $scope.updateTransactionList = function() {
-        $scope.transactionsToShow = transactions;
-  
-        const totalAmountToShow = $scope.transactionsToShow.reduce((acc, transaction) => {
-          return transaction.type === "income" ? acc + transaction.amount : acc - transaction.amount;
-        }, 0);
-  
-        $scope.totalAmount = totalAmountToShow;
-      };
-  
-      // Apply Filters
-      $scope.applyFilters = function() {
-        const categoryFilter = $scope.categoryFilter;
-        const fromDate = $scope.fromDate;
-        const toDate = $scope.toDate;
-  
-        $scope.transactionsToShow = transactions.filter(transaction => {
-          const categoryMatch = !categoryFilter || categoryMap[categoryFilter] === transaction.category;
-          const dateMatch = (!fromDate || new Date(transaction.date) >= new Date(fromDate)) &&
-                           (!toDate || new Date(transaction.date) <= new Date(toDate));
-  
-          return categoryMatch && dateMatch;
-        });
-      };
-  
-      // Reset the form
-      $scope.resetForm = function() {
-        $scope.selectedCategory = "";
-        $scope.transactionAmount = 0;
-        $scope.transactionDate = "";
-        $scope.transactionNotes = "";
-      };
-  
-      // Initialize
-      $scope.updateTransactionList();
     }
-  ]);
-  
+
+    $scope.modalData = initializeModalData();
+
+    // Fetch transactions from backend
+    $scope.fetchTransactions = function () {
+      const userId = localStorage.getItem("id");
+
+      $http.get(`http://localhost:3000/api/transactions/${userId}`)
+        .then(response => {
+          $scope.transactionsToShow = response.data.transactions.map((transaction) => {
+            const category = $scope.categories.find((c) => c.category_id === transaction.category_id);
+            return {
+              ...transaction,
+              categoryName: category ? category.category_name : "Unknown"
+            };
+          });
+          $scope.calculateTotalAmount();
+        })
+        .catch(error => {
+          console.error("Error fetching transactions:", error);
+          alert("Error loading transactions. Please try again.");
+        });
+    };
+
+    $http.get("http://localhost:3000/api/category/").then(
+      (response) => {
+        $scope.categories = response.data; 
+        $scope.fetchTransactions();
+      }
+    );
+
+    // Calculate total amount
+    $scope.calculateTotalAmount = function () {
+      $scope.totalAmount = $scope.transactionsToShow.reduce((total, transaction) => {
+        return transaction.transaction_type === "income"
+          ? total + parseFloat(transaction.amount)
+          : total - parseFloat(transaction.amount);
+      }, 0);
+    };
+
+    // Open income modal
+    $scope.openAddIncomeModal = function () {
+      $scope.modalTitle = "Add Income";
+      $scope.categoryOptions = incomeCategories;
+      $scope.isIncome = true;
+      $scope.isModalVisible = true;
+      $scope.modalData = initializeModalData();
+    };
+
+    // Open expense modal
+    $scope.openAddExpenseModal = function () {
+      $scope.modalTitle = "Add Expense";
+      $scope.categoryOptions = expenseCategories;
+      $scope.isIncome = false;
+      $scope.isModalVisible = true;
+      $scope.modalData = initializeModalData();
+    };
+
+    // Close modal
+    $scope.closeModal = function () {
+      $scope.isModalVisible = false;
+    };
+
+    const category = $scope.categories.find(c => c.category_id === transaction.category_id);
+    categoryName = category ? category.category_name : "Unknown"
+
+    // Add transaction
+    $scope.addTransaction = function () {
+      if (!$scope.modalData.selectedCategory || !$scope.modalData.transactionAmount || !$scope.modalData.transactionDate) {
+        alert("Please fill in all required fields");
+        return;
+      }
+
+      const userId = localStorage.getItem("id");
+      const endpoint = $scope.isIncome ? "income" : "outcome";
+
+      const newTransaction = {
+        category_id: $scope.modalData.selectedCategory,
+        amount: parseFloat($scope.modalData.transactionAmount),
+        date: $scope.modalData.transactionDate || "2030-11-01",  
+        notes: $scope.modalData.transactionNotes || "",
+        transaction_type: endpoint,
+      };
+      
+      $http.post(`http://localhost:3000/api/transactions/${endpoint}/${userId}`, newTransaction)
+        .then(response => {
+            $scope.transactionsToShow.push(response.data.transactions);
+            $scope.calculateTotalAmount();
+        })
+      $scope.closeModal();
+    };
+
+    // Apply filters
+    $scope.applyFilters = function () {
+      const userId = localStorage.getItem("id");
+      if (!userId) return;
+
+      const params = {
+        userId: userId
+      };
+
+      if ($scope.categoryFilter) params.category_id = $scope.categoryFilter;
+      if ($scope.fromDate) params.from = new Date($scope.fromDate).toISOString();
+      if ($scope.toDate) params.to = new Date($scope.toDate).toISOString();
+
+      $http.get(`http://localhost:3000/api/transactions/${userId}`, { params })
+        .then(response => {
+          if (response.data && Array.isArray(response.data.transactions)) {
+            $scope.transactionsToShow = response.data.transactions;
+            $scope.calculateTotalAmount();
+          }
+        })
+        .catch(error => {
+          console.error("Error applying filters:", error);
+          alert("Error filtering transactions. Please try again.");
+        });
+    };
+  }
+]); 

@@ -18,6 +18,18 @@ class TransactionsService {
     return await TransactionsRepository.findTransactionsById(id);
   }
 
+  static async getAllTransactions() {
+    try {
+      return await TransactionsRepository.findAllTransactions();
+    } catch (error) {
+      throw new Error("Error in TransactionsService: " + error.message);
+    }
+  }
+
+  static async getAllDebts() {
+    
+  }
+
   static async getCategoryById(){
     return await TransactionsRepository.getCategoryById(category_id)
   }
