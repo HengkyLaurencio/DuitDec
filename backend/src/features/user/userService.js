@@ -15,8 +15,8 @@ class UserService {
     return UserModel.createUser(username, email, hashedPassword);
   }
 
-  static async updateUser(id, username, email) {
-    return UserModel.updateUser(id, username, email);
+  static async updateUser(id, username, email, image) {
+    return UserModel.updateUser(id, username, email, image);
   }
 
   static async deleteUser(id) {

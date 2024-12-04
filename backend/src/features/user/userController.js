@@ -36,8 +36,8 @@ class UserController {
   static async updateUser(req, res) {
     try {
       const { id } = req.params;
-      const { username, email } = req.body;
-      const updatedUser = await UserService.updateUser(id, username, email);
+      const { username, email, image} = req.body;
+      const updatedUser = await UserService.updateUser(id, username, email, image);
       if (!updatedUser) {
         return res.status(404).json({ message: 'User not found' });
       }

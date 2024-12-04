@@ -26,14 +26,14 @@ class UserModel {
     return result.rows[0];
   }
 
-  static async updateUser(id, username, email) {
+  static async updateUser(id, username, email, image) {
     const query = `
       UPDATE users
-      SET username = $2, email = $3, updated_at = NOW()
+      SET username = $2, email = $3, image = $4, updated_at = NOW()
       WHERE user_id = $1
-      RETURNING user_id, username, email, created_at, updated_at
+      RETURNING user_id, username, email, image, created_at, updated_at
     `;
-    const result = await db.query(query, [id, username, email]);
+    const result = await db.query(query, [id, username, email, image]);
     return result.rows[0];
   }
 
