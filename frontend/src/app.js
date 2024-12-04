@@ -31,11 +31,6 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
       templateUrl: "views/transaction.html",
       controller: "TransactionController",
     })
-    .state("settings", {
-      url: "/settings",
-      templateUrl: "views/settings.html",
-      controller: "SettingsController",
-    })
     .state("dashboard", {
       url: "/dashboard",
       templateUrl: "views/dashboard.html",
@@ -74,7 +69,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
       views: {
         "content@dashboard": {
           templateUrl: "views/settings.html",
-          controller: "",
+          controller: "settingsController",
         },
       },
     })
@@ -93,6 +88,15 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
         "content@dashboard": {
           templateUrl: "views/debt.html",
           controller: "debtController",
+        },
+      },
+    })
+    .state("dashboard.profile", {
+      url: "/profile",
+      views: {
+        "content@dashboard": {
+          templateUrl: "views/profile.html",
+          controller: "profileController",
         },
       },
     })
