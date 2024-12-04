@@ -6,6 +6,7 @@ angular.module("myApp").controller("transactionsController", [
     $scope.totalAmount = 0;
     $scope.isModalVisible = false;
     $scope.modalTitle = "";
+    $scope.categories = [];
     
     // Initialize filter models
     $scope.categoryFilter = "";
@@ -47,17 +48,17 @@ angular.module("myApp").controller("transactionsController", [
     // Fetch transactions from backend
     $scope.fetchTransactions = function () {
       const userId = localStorage.getItem("id");
-      if (!userId) {
-        console.error("No user ID found");
-        return;
-      }
 
       $http.get(`http://localhost:3000/api/transactions/${userId}`)
         .then(response => {
-          if (response.data && Array.isArray(response.data.transactions)) {
-            $scope.transactionsToShow = response.data.transactions;
-            $scope.calculateTotalAmount();
-          }
+          $scope.transactionsToShow = response.data.transactions.map((transaction) => {
+            const category = $scope.categories.find((c) => c.category_id === transaction.category_id);
+            return {
+              ...transaction,
+              categoryName: category ? category.category_name : "Unknown"
+            };
+          });
+          $scope.calculateTotalAmount();
         })
         .catch(error => {
           console.error("Error fetching transactions:", error);
@@ -65,10 +66,17 @@ angular.module("myApp").controller("transactionsController", [
         });
     };
 
+    $http.get("http://localhost:3000/api/category/").then(
+      (response) => {
+        $scope.categories = response.data; 
+        $scope.fetchTransactions();
+      }
+    );
+
     // Calculate total amount
     $scope.calculateTotalAmount = function () {
       $scope.totalAmount = $scope.transactionsToShow.reduce((total, transaction) => {
-        return transaction.type === "income"
+        return transaction.transaction_type === "income"
           ? total + parseFloat(transaction.amount)
           : total - parseFloat(transaction.amount);
       }, 0);
@@ -97,6 +105,9 @@ angular.module("myApp").controller("transactionsController", [
       $scope.isModalVisible = false;
     };
 
+    const category = $scope.categories.find(c => c.category_id === transaction.category_id);
+    categoryName = category ? category.category_name : "Unknown"
+
     // Add transaction
     $scope.addTransaction = function () {
       if (!$scope.modalData.selectedCategory || !$scope.modalData.transactionAmount || !$scope.modalData.transactionDate) {
@@ -108,17 +119,13 @@ angular.module("myApp").controller("transactionsController", [
       const endpoint = $scope.isIncome ? "income" : "outcome";
 
       const newTransaction = {
-        // category: categoryMap[$scope.modalData.selectedCategory] || $scope.modalData.selectedCategory,
-        category_id: "1",
+        category_id: $scope.modalData.selectedCategory,
         amount: parseFloat($scope.modalData.transactionAmount),
         date: $scope.modalData.transactionDate || "2030-11-01",  
         notes: $scope.modalData.transactionNotes || "",
         transaction_type: endpoint,
       };
       
-
-
-
       $http.post(`http://localhost:3000/api/transactions/${endpoint}/${userId}`, newTransaction)
         .then(response => {
             $scope.transactionsToShow.push(response.data.transactions);
@@ -136,7 +143,7 @@ angular.module("myApp").controller("transactionsController", [
         userId: userId
       };
 
-      if ($scope.categoryFilter) params.category = categoryMap[$scope.categoryFilter] || $scope.categoryFilter;
+      if ($scope.categoryFilter) params.category_id = $scope.categoryFilter;
       if ($scope.fromDate) params.from = new Date($scope.fromDate).toISOString();
       if ($scope.toDate) params.to = new Date($scope.toDate).toISOString();
 
@@ -152,7 +159,5 @@ angular.module("myApp").controller("transactionsController", [
           alert("Error filtering transactions. Please try again.");
         });
     };
-
-    $scope.fetchTransactions();
   }
-]);
+]); 
