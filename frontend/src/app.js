@@ -78,7 +78,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
       views: {
         "content@dashboard": {
           templateUrl: "views/budget.html",
-          controller: "",
+          controller: "BudgetController",
         },
       },
     })

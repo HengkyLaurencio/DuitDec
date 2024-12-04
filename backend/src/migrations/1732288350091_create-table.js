@@ -55,6 +55,10 @@ exports.up = (pgm) => {
       type: "varchar(50)",
       notNull: true,
     },
+    category_icon: {
+      type: "varchar(50)",
+      notNull: true,
+    }
   });
 
   pgm.createTable("transactions", {
@@ -211,8 +215,12 @@ exports.up = (pgm) => {
       type: "date",
       notNull: true,
     },
-    account_name: {
-      type: "varchar(50)",
+    budget_amout: {
+      type: "decimal(10, 2)",
+      notNull: true,
+    },
+    used_amout: {
+      type: "decimal(10, 2)",
       notNull: true,
     },
   });

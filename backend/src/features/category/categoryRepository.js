@@ -5,9 +5,7 @@ class TransactionsRepository {
   static async findAll() {
     try {
       const query = `
-        SELECT 
-          category_id
-        FROM categories
+        SELECT * FROM categories
       `;
       
       const { rows } = await db.query(query);
