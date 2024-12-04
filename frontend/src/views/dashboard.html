@@ -19,7 +19,7 @@
         </div>
       </h4>
 
-      <!-- Menu Items -->
+      <!-- Menu Items (Sidebar) -->
       <li ng-repeat="menu in menus" class="mt-4">
         <a ng-href="{{ menu.link }}"
           class="flex items-center gap-4 py-3 px-2 text-gray-800 transition-colors duration-300 ease-in-out hover:bg-[#f9a600] hover:text-white rounded-md">
@@ -60,7 +60,7 @@
     </ul>
     <!-- Profile Section -->
     <div class="mt-4 transition-all duration-300 ease-in-out hover:bg-white hover:rounded-md ">
-      <a ng-href="{{}}">
+      <a ng-href="/dashboard/settings">
         <div class="flex items-center">
           <img ng-src="../images/{{profile.image}}" alt="Profile Image"
             class="w-12 rounded-full border-2 border-white" />
