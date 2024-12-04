@@ -52,6 +52,8 @@ angular.module("myApp").controller("settingsController", [
         .then(() => {
           $scope.currentProfilePic = $scope.selectedProfilePic.url;
           alert("Profile updated successfully!");
+          $scope.selectedProfilePic = null;
+          location.reload();
         })
         .catch((error) => {
           console.log(error);
