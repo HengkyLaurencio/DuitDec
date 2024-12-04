@@ -41,9 +41,13 @@
             <div class="amount-edit-row flex justify-between items-center mb-2">
                 <div class="amount text-base">{{budget.currentAmount}} / {{budget.totalAmount}}</div>
                 <div class="actions flex gap-2">
-                    <button
+                    <button ng-click="openEditModal(budget)"
                         class="edit-btn bg-[#f9a600] text-white p-2 rounded cursor-pointer text-sm flex items-center gap-1 hover:bg-[#f9a600]">
                         <span class="material-symbols-outlined">edit</span>
+                    </button>
+                    <button ng-click="deleteDebt(budget.debt_id)"
+                        class="edit-btn bg-red-600 text-white p-2 rounded cursor-pointer text-sm flex items-center gap-1 hover:bg-red-700">
+                        <span class="material-symbols-outlined">delete</span>
                     </button>
                 </div>
             </div>
@@ -95,6 +99,59 @@
 
                 <div class="flex justify-between gap-4">
                     <button type="button" ng-click="closeModal()" class="w-full px-4 py-2 bg-gray-200 text-gray-600 rounded-md hover:bg-gray-300">
+                        CANCEL
+                    </button>
+                    <button type="submit" class="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                        SAVE
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>    
+
+
+    <div id="editModal" class="hidden fixed inset-0 z-[10000] bg-black bg-opacity-50 animate-fade-in">
+        <div class="bg-white mx-auto my-20 p-5 rounded-lg w-1/2 max-w-lg max-h-[80vh] shadow-lg overflow-y-auto">
+            <h2 id="modal-title" class="text-center text-xl font-bold mb-5">
+                Edit Debt/Credit
+            </h2>
+            
+            <form ng-submit="submitEditForm()" class="space-y-4">
+                <input type="hidden" id="id" ng-model="modalEditData.id">
+                <input type="hidden" id="id" ng-model="modalEditData.debt_type">
+                
+                <div>
+                    <label for="person" class="block font-bold mb-1">Person</label>
+                    <input type="text" id="person" ng-model="modalEditData.name" placeholder="Enter person's name" required
+                        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300">
+                </div>
+
+                <div>
+                    <label for="amount" class="block font-bold mb-1">Amount ($)</label>
+                    <input type="number" id="amount" ng-model="modalEditData.amount" required
+                        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300">
+                </div>
+
+                <div>
+                    <label for="residual" class="block font-bold mb-1">residual ($)</label>
+                    <input type="number" id="residual" ng-model="modalEditData.residual" required
+                        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300">
+                </div>
+
+                <div>
+                    <label for="dateStart" class="block font-bold mb-1">Date Start</label>
+                    <input type="date" id="dateStart" ng-model="modalEditData.date_start" required
+                        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300">
+                </div>
+
+                <div>
+                    <label for="dateEnd" class="block font-bold mb-1">Date End</label>
+                    <input type="date" id="dateEnd" ng-model="modalEditData.date_end" required
+                        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300">
+                </div>
+
+                <div class="flex justify-between gap-4">
+                    <button type="button" ng-click="closeEditModal()" class="w-full px-4 py-2 bg-gray-200 text-gray-600 rounded-md hover:bg-gray-300">
                         CANCEL
                     </button>
                     <button type="submit" class="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">

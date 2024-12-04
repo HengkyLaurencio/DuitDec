@@ -7,19 +7,24 @@
       <div class="flex-grow">
         <div class="font-semibold mb-1">{{ budget.category }}</div>
         <div class="bg-gray-300 rounded-full h-2 mb-2 overflow-hidden">
-          <div
-            class="h-full transition-width duration-300"
+          <div class="h-full transition-width duration-300"
             ng-class="{'bg-green-500': budget.percent <= 100, 'bg-red-500': budget.percent > 100}"
-            style="width: {{ budget.percent }}%;"
-          ></div>
+            style="width: {{ budget.percent }}%;"></div>
         </div>
         <div class="flex justify-between items-center">
           <div class="text-sm text-gray-800">
-            ${{ budget.used_amout }} / ${{ budget.budget_amout }} <span ng-class="{'text-green-500': budget.percent <= 100, 'text-red-500': budget.percent > 100}" class="font-semibold">({{ budget.percent }}%)</span>
+            ${{ budget.used_amout }} / ${{ budget.budget_amout }} <span
+              ng-class="{'text-green-500': budget.percent <= 100, 'text-red-500': budget.percent > 100}"
+              class="font-semibold">({{ budget.percent }}%)</span>
           </div>
-          <button class="bg-orange-500 text-white rounded px-3 py-1 text-xs hover:bg-orange-400">Edit</button>
+          <div><button ng-click="openEditModal(budget)"
+            class="bg-orange-500 text-white rounded px-3 py-1 text-xs hover:bg-orange-400"><span class="material-symbols-outlined">edit</span></button>
+            <button ng-click="removeBudget(budget.budget_id)"
+            class="bg-red-500 text-white rounded px-3 py-1 text-xs hover:bg-red-400"><span class="material-symbols-outlined">delete</span></button>
+          </div>
         </div>
-        <div class="text-xs" ng-class="{'text-gray-500': budget.residual >= 0, 'text-red-500 font-semibold': budget.residual < 0}">
+        <div class="text-xs"
+          ng-class="{'text-gray-500': budget.residual >= 0, 'text-red-500 font-semibold': budget.residual < 0}">
           Residual amount: ${{ budget.residual }}
         </div>
       </div>
@@ -34,19 +39,25 @@
       <div class="flex-grow">
         <div class="font-semibold mb-1">{{ budget.category }}</div>
         <div class="bg-gray-300 rounded-full h-2 mb-2 overflow-hidden">
-          <div
-            class="h-full transition-width duration-300"
+          <div class="h-full transition-width duration-300"
             ng-class="{'bg-green-500': budget.percent <= 100, 'bg-red-500': budget.percent > 100}"
-            style="width: {{ budget.percent }}%;"
-          ></div>
+            style="width: {{ budget.percent }}%;"></div>
         </div>
         <div class="flex justify-between items-center">
           <div class="text-sm text-gray-800">
-            ${{ budget.used_amout }} / ${{ budget.budget_amout }} <span ng-class="{'text-green-500': budget.percent <= 100, 'text-red-500': budget.percent > 100}" class="font-semibold">({{ budget.percent }}%)</span>
+            ${{ budget.used_amout }} / ${{ budget.budget_amout }} <span
+              ng-class="{'text-green-500': budget.percent <= 100, 'text-red-500': budget.percent > 100}"
+              class="font-semibold">({{ budget.percent }}%)</span>
           </div>
-          <button class="bg-orange-500 text-white rounded px-3 py-1 text-xs hover:bg-orange-400">Edit</button>
+          <div><button ng-click="openEditModal(budget)"
+            class="bg-orange-500 text-white rounded px-3 py-1 text-xs hover:bg-orange-400"><span class="material-symbols-outlined">edit</span></button>
+            <button ng-click="removeBudget(budget.budget_id)"
+            class="bg-red-500 text-white rounded px-3 py-1 text-xs hover:bg-red-400"><span class="material-symbols-outlined">delete</span></button>
+          </div>
+          
         </div>
-        <div class="text-xs" ng-class="{'text-gray-500': budget.residual >= 0, 'text-red-500 font-semibold': budget.residual < 0}">
+        <div class="text-xs"
+          ng-class="{'text-gray-500': budget.residual >= 0, 'text-red-500 font-semibold': budget.residual < 0}">
           Residual amount: ${{ budget.residual }}
         </div>
       </div>
@@ -54,66 +65,135 @@
   </div>
 
   <div class="fixed bottom-5 right-5 flex flex-col gap-2 z-[999]">
-    <button ng-click="openAddModal()" class="w-16 h-16 bg-green-600 text-white text-2xl rounded-full shadow-lg hover:bg-green-700">
-        +
+    <button ng-click="openAddModal()"
+      class="w-16 h-16 bg-green-600 text-white text-2xl rounded-full shadow-lg hover:bg-green-700">
+      +
     </button>
   </div>
 
-  
- <!-- Add Budget Modal -->
-<div ng-show="showModal" class="fixed inset-0 z-[10000] bg-black bg-opacity-50 animate-fade-in flex justify-center items-center">
-  <div class="bg-white mx-auto my-20 p-6 rounded-lg w-1/2 max-w-xl max-h-[90vh] shadow-lg overflow-y-auto">
-    <h2 class="text-center text-xl font-bold mb-5">
-      Add New Budget
-    </h2>
 
-    <form ng-submit="submitBudget()" class="space-y-4">
-      <!-- Category -->
-      <div>
-        <label for="category" class="block font-bold mb-1">Category</label>
-        <select ng-model="newBudget.category_id" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300" required>
-          <option ng-repeat="category in categories" value="{{category.category_id}}">{{category.category_name}}</option>
-        </select>
-      </div>
+  <!-- Add Budget Modal -->
+  <div ng-show="showModal"
+    class="fixed inset-0 z-[10000] bg-black bg-opacity-50 animate-fade-in flex justify-center items-center">
+    <div class="bg-white mx-auto my-20 p-6 rounded-lg w-1/2 max-w-xl max-h-[90vh] shadow-lg overflow-y-auto">
+      <h2 class="text-center text-xl font-bold mb-5">
+        Add New Budget
+      </h2>
 
-      <!-- Period -->
-      <div>
-        <label for="period" class="block font-bold mb-1">Period</label>
-        <select ng-model="newBudget.period" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300" required>
-          <option value="weekly">Weekly</option>
-          <option value="monthly">Monthly</option>
-        </select>
-      </div>
+      <form ng-submit="submitBudget()" class="space-y-4">
+        <!-- Category -->
+        <div>
+          <label for="category" class="block font-bold mb-1">Category</label>
+          <select ng-model="newBudget.category_id"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300" required>
+            <option ng-repeat="category in categories" value="{{category.category_id}}">{{category.category_name}}
+            </option>
+          </select>
+        </div>
 
-      <!-- Start Date -->
-      <div>
-        <label for="start_date" class="block font-bold mb-1">Start Date</label>
-        <input type="date" ng-model="newBudget.start_date" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300" required>
-      </div>
+        <!-- Period -->
+        <div>
+          <label for="period" class="block font-bold mb-1">Period</label>
+          <select ng-model="newBudget.period"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300" required>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+        </div>
 
-      <!-- Budget Amount -->
-      <div>
-        <label for="budget_amout" class="block font-bold mb-1">Budget Amount</label>
-        <input type="number" ng-model="newBudget.budget_amout" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300" required>
-      </div>
+        <!-- Start Date -->
+        <div>
+          <label for="start_date" class="block font-bold mb-1">Start Date</label>
+          <input type="date" ng-model="newBudget.start_date"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300" required>
+        </div>
 
-      <!-- Used Amount -->
-      <div>
-        <label for="used_amout" class="block font-bold mb-1">Used Amount</label>
-        <input type="number" ng-model="newBudget.used_amout" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300">
-      </div>
+        <!-- Budget Amount -->
+        <div>
+          <label for="budget_amout" class="block font-bold mb-1">Budget Amount</label>
+          <input type="number" ng-model="newBudget.budget_amout"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300" required>
+        </div>
 
-      <div class="flex justify-between gap-4">
-        <button type="button" ng-click="closeModal()" class="w-full px-4 py-2 bg-gray-200 text-gray-600 rounded-md hover:bg-gray-300">
-          CANCEL
-        </button>
-        <button type="submit" class="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
-          SAVE
-        </button>
-      </div>
-    </form>
+        <!-- Used Amount -->
+        <div>
+          <label for="used_amout" class="block font-bold mb-1">Used Amount</label>
+          <input type="number" ng-model="newBudget.used_amout"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300">
+        </div>
+
+        <div class="flex justify-between gap-4">
+          <button type="button" ng-click="closeModal()"
+            class="w-full px-4 py-2 bg-gray-200 text-gray-600 rounded-md hover:bg-gray-300">
+            CANCEL
+          </button>
+          <button type="submit" class="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+            SAVE
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
 
-  
+  <!-- Edit Budget Modal -->
+  <div ng-show="showEditModal"
+    class="fixed inset-0 z-[10000] bg-black bg-opacity-50 animate-fade-in flex justify-center items-center">
+    <div class="bg-white mx-auto my-20 p-6 rounded-lg w-1/2 max-w-xl max-h-[90vh] shadow-lg overflow-y-auto">
+      <h2 class="text-center text-xl font-bold mb-5">Edit Budget</h2>
+
+      <form ng-submit="updateBudget()" class="space-y-4">
+        <!-- Category -->
+        <div>
+          <label for="category" class="block font-bold mb-1">Category</label>
+          <select ng-model="editBudget.category_id"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300" required>
+            <option ng-repeat="category in categories" value="{{category.category_id}}">
+              {{category.category_name}}
+            </option>
+          </select>
+        </div>
+
+        <!-- Period -->
+        <div>
+          <label for="period" class="block font-bold mb-1">Period</label>
+          <select ng-model="editBudget.period"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300" required>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+        </div>
+
+        <!-- Start Date -->
+        <div>
+          <label for="start_date" class="block font-bold mb-1">Start Date</label>
+          <input type="date" ng-model="editBudget.start_date"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300" required>
+        </div>
+
+        <!-- Budget Amount -->
+        <div>
+          <label for="budget_amout" class="block font-bold mb-1">Budget Amount</label>
+          <input type="number" ng-model="editBudget.budget_amout"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300" required>
+        </div>
+
+        <!-- Used Amount -->
+        <div>
+          <label for="used_amout" class="block font-bold mb-1">Used Amount</label>
+          <input type="number" ng-model="editBudget.used_amout"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300">
+        </div>
+
+        <div class="flex justify-between gap-4">
+          <button type="button" ng-click="closeEditModal()"
+            class="w-full px-4 py-2 bg-gray-200 text-gray-600 rounded-md hover:bg-gray-300">
+            CANCEL
+          </button>
+          <button type="submit" class="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+            UPDATE
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
