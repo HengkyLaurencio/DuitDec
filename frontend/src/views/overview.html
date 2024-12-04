@@ -14,10 +14,6 @@
         <p>Balance:</p>
         <p class="text-green-500 font-bold">{{ summary.balance | currency }}</p>
       </div>
-      <div class="flex justify-between">
-        <p>Credit Cards:</p>
-        <p class="text-red-500 font-bold">{{ summary.creditCards | currency }}</p>
-      </div>
       <hr class="my-4">
       <div class="text-right font-bold text-green-500">
         {{ summary.total | currency }}
@@ -80,19 +76,5 @@
     </div>
   </div>
 
-  <!-- Row 3: Credit Cards -->
-  <div class="p-6 bg-white rounded-2xl shadow-lg">
-    <h3 class="text-xl font-semibold text-gray-800 mb-4">Credit Cards</h3>
-    <div class="space-y-4">
-      <div class="flex justify-between" ng-repeat="card in creditCards">
-        <p>{{ card.name }}</p>
-        <p class="text-red-500 font-bold">{{ card.balance | currency }} {{ card.currency }}</p>
-      </div>
-    </div>
-    <div class="w-full mt-2 bg-gray-200 rounded-full h-2">
-      <div class="bg-red-500 h-full rounded-full"
-           style="width: 10%">
-      </div>
-    </div>
-  </div>
+  
 </div>

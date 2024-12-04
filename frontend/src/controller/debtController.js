@@ -21,7 +21,6 @@ angular.module('myApp').controller('debtController', [
         // Function to fetch data from the API
         $http.get('http://localhost:3000/api/debts')
             .then(function (response) {
-                // Filter the debts based on the user ID
                 $scope.budgets = response.data
                     .filter(function(debt) {
                         return debt.user_id == userId;

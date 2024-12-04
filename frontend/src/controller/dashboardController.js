@@ -47,14 +47,7 @@ angular.module("myApp").controller("DashboardController", [
               title: "Accounts",
             },
           },
-          {
-            name: "Credit Cards",
-            icon: "credit_card",
-            link: "/dashboard/creditcards",
-            data: {
-              title: "Credit Cards",
-            },
-          },
+          
           {
             name: "Budgets",
             icon: "timelapse",

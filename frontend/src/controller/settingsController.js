@@ -1,29 +1,64 @@
-// Define the ProfileController
-angular.module("myApp").controller("settingsController", function ($scope) {
-  // Current profile data
-  $scope.currentProfilePic = "https://via.placeholder.com/150";
-  $scope.name = "John Doe";
-  $scope.email = "johndoe@example.com";
+angular.module("myApp").controller("settingsController", [
+  "$scope",
+  "$http",
+  function ($scope, $http) {
+    $scope.profilePics = [
+      { id: "pic1", url: "../images/001.png" },
+      { id: "pic2", url: "../images/002.png" },
+      { id: "pic3", url: "../images/003.png" },
+      { id: "pic4", url: "../images/004.png" },
+      { id: "pic5", url: "../images/005.png" },
+      { id: "pic6", url: "../images/006.png" },
+      { id: "pic7", url: "../images/007.png" },
+      { id: "pic8", url: "../images/008.png" },
+      { id: "pic9", url: "../images/009.png" },
+    ];
+    $scope.selectedProfilePic = null;
+    const id = localStorage.getItem("id");
+    $http
+      .get(`http://localhost:3000/api/users/${id}`)
+      .then((response) => {
+        const userData = response.data;
+        console.log(userData);
+        $scope.name = userData.username;
+        $scope.email = userData.email;
+        $scope.currentProfilePic = `../images/${userData.image}`;
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+        alert("Failed to load user data.");
+      });
 
-  // Available profile pictures
-  $scope.profilePics = [
-    { id: "pic1", url: "https://via.placeholder.com/150" },
-    { id: "pic2", url: "https://via.placeholder.com/150/0000FF" },
-    { id: "pic3", url: "https://via.placeholder.com/150/FF0000" },
-    { id: "pic4", url: "https://via.placeholder.com/150/00FF00" },
-    { id: "pic5", url: "https://via.placeholder.com/150/FFFF00" },
-  ];
+    $scope.saveChanges = function () {
 
-  // Selected profile picture
-  $scope.selectedProfilePic = null;
-
-  // Save changes
-  $scope.saveChanges = function () {
-    if ($scope.selectedProfilePic) {
-      $scope.currentProfilePic = $scope.selectedProfilePic.url;
-      alert("Profile updated successfully!");
-    } else {
-      alert("Please select a profile picture.");
-    }
-  };
-});
+      if (!$scope.selectedProfilePic){
+        $scope.selectedProfilePic = $scope.currentProfilePic;
+        var updatedData = {
+          username: $scope.name,
+          email: $scope.email,
+          image: $scope.selectedProfilePic,
+        };
+      }else{
+        var updatedData = {
+          username: $scope.name,
+          email: $scope.email,
+          image: $scope.selectedProfilePic.url.split("/").pop(),
+        };
+      }
+        
+      console.log($scope.selectedProfilePic);
+      $http
+        .put(`http://localhost:3000/api/users/${id}`, updatedData)
+        .then(() => {
+          $scope.currentProfilePic = $scope.selectedProfilePic.url;
+          alert("Profile updated successfully!");
+          $scope.selectedProfilePic = null;
+          location.reload();
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("Failed to update profile.");
+        });
+    };
+  },
+]);
