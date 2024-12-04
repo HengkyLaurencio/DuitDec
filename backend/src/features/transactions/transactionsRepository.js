@@ -32,6 +32,16 @@ class transactionsRepository {
     return rows;
   }
 
+  static async findAllTransactions() {
+    let query = `
+    SELECT transaction_id, user_id, transaction_type, category_id, amount, notes, date 
+    FROM transactions 
+  `;
+
+    const { rows } = await db.query(query);
+    return rows;
+  }
+
   static async getCategoryById(category_id) {
     try {
       const query = `
