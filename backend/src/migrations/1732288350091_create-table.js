@@ -31,6 +31,7 @@ exports.up = (pgm) => {
     },
     image:{
       type: "varchar(100)",
+      notNull: true,
       default: "default.jpg",
     },
     created_at: {
