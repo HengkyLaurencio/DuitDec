@@ -50,6 +50,10 @@ exports.up = (pgm) => {
       type: "varchar(50)",
       notNull: true,
     },
+    category_icon: {
+      type: "varchar(50)",
+      notNull: true,
+    }
   });
 
   pgm.createTable("transactions", {
