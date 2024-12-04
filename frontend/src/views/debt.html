@@ -45,6 +45,10 @@
                         class="edit-btn bg-[#f9a600] text-white p-2 rounded cursor-pointer text-sm flex items-center gap-1 hover:bg-[#f9a600]">
                         <span class="material-symbols-outlined">edit</span>
                     </button>
+                    <button ng-click="deleteDebt(budget.debt_id)"
+                        class="edit-btn bg-red-600 text-white p-2 rounded cursor-pointer text-sm flex items-center gap-1 hover:bg-red-700">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
                 </div>
             </div>
             <div class="residual">Residual amount: <span class="text-{{budget.color}} font-bold">{{budget.residual}}</span></div>
