@@ -11,7 +11,7 @@ class UserModel {
 
   static async getUserById(id) {
     const query =
-      "SELECT user_id, username, email, password, created_at, updated_at FROM users WHERE user_id = $1";
+      "SELECT user_id, username, email, password, image, created_at, updated_at FROM users WHERE user_id = $1";
     const result = await db.query(query, [id]);
     return result.rows[0];
   }

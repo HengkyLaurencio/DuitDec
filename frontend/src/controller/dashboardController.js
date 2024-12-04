@@ -19,6 +19,7 @@ angular.module("myApp").controller("DashboardController", [
         $scope.profile = {
           name: response.data.username,
           email: response.data.email,
+          image: response.data.image,
         };
 
         $scope.menus = [
@@ -84,7 +85,7 @@ angular.module("myApp").controller("DashboardController", [
         if (currentMenu) {
           $scope.pageTitle = currentMenu.data.title;
         } else {
-          $scope.pageTitle = "Dashboard"; // Default title if no match
+          $scope.pageTitle = "Dashboard";
         }
       })
       .catch(function (error) {
