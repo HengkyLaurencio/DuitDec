@@ -1,6 +1,8 @@
 angular.module("myApp").controller("OverviewController", [
   "$scope",
-  function ($scope) {
+  "$http",
+  function ($scope, $http) {
+    // Inisialisasi summary, thisMonth, dan lastMonth
     $scope.summary = {
       balance: 999999.12,
       creditCards: -11111.11,
@@ -17,7 +19,37 @@ angular.module("myApp").controller("OverviewController", [
       total: 1500.0 - 396.76,
     };
 
-   
+    // Fetch data dari API untuk accounts
+    const userId = localStorage.getItem("id"); // Ganti dengan ID pengguna yang sesuai
+    $scope.accounts = [];
+    $http
+      .get(`http://localhost:3000/api/accounts/${userId}`)
+      .then((response) => {
+        if (response.data && response.data.accounts) {
+          $scope.accounts = response.data.accounts.map((account) => ({
+            name: account.account_name,
+            balance: parseFloat(account.balance), // Konversi balance menjadi angka
+            currency: "USD", // Default currency, sesuaikan jika perlu
+          }));
+
+          // Update summary balance berdasarkan total akun
+          const totalBalance = $scope.accounts.reduce(
+            (total, account) => total + account.balance,
+            0
+          );
+          $scope.summary.balance = totalBalance;
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching accounts:", error);
+      });
+
+    // Data untuk creditCards (statis untuk saat ini)
+    $scope.creditCards = [
+      { name: "Credit Card", balance: -189.76, currency: "USD" },
+    ];
+
+    // Chart: This Month
     const thisMonthCtx = document
       .getElementById("chart-this-month")
       .getContext("2d");
@@ -37,12 +69,13 @@ angular.module("myApp").controller("OverviewController", [
         responsive: true,
         plugins: {
           legend: {
-            display: false, 
+            display: false,
           },
         },
       },
     });
 
+    // Chart: Last Month
     const lastMonthCtx = document
       .getElementById("chart-last-month")
       .getContext("2d");
@@ -62,20 +95,10 @@ angular.module("myApp").controller("OverviewController", [
         responsive: true,
         plugins: {
           legend: {
-            display: false, 
+            display: false,
           },
         },
       },
     });
-
-    $scope.accounts = [
-      { name: "Wallet", balance: 90.24, currency: "USD" },
-      { name: "Bank Account", balance: 13534.24, currency: "USD" },
-    ];
-
-    $scope.creditCards = [
-      { name: "Credit Card", balance: -189.76, currency: "USD" },
-    ];
-
   },
 ]);
