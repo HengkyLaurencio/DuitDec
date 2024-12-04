@@ -15,6 +15,8 @@ angular.module('myApp').controller('debtController', [
             date_end: ''
         };
 
+        $scope.modalEditData = {};
+
         // Get the user ID from localStorage
         var userId = localStorage.getItem("id");
 
@@ -32,11 +34,17 @@ angular.module('myApp').controller('debtController', [
                             color: debt.debt_type === 'debt' ? 'red-500' : 'green-500',
                             type: debt.debt_type.charAt(0).toUpperCase() + debt.debt_type.slice(1),
                             participants: debt.debt_type === 'debt' ? 'You ➔ ' + debt.name : debt.name + ' ➔ You',
+                            name: debt.name,
                             dateRange: new Date(debt.date_start).toLocaleDateString() + ' - ' + new Date(debt.date_end).toLocaleDateString(),
                             progress: ((debt.amount - debt.debt_residual) / debt.amount) * 100,
                             currentAmount: '$' + (debt.amount - debt.debt_residual).toFixed(2),
                             totalAmount: '$' + debt.amount,
                             residual: '$' + debt.debt_residual,
+                            amount: debt.amount,
+                            residual_amount : debt.debt_residual,
+                            date_start: debt.date_end,
+                            date_end: debt.date_end,
+                            debt_id: debt.debt_id
                         };
                     });
             }, function (error) {
@@ -78,5 +86,52 @@ angular.module('myApp').controller('debtController', [
                     console.error("Error adding debt/credit:", error);
                 });
         };
+
+
+        $scope.openEditModal = function (debt) {
+            const formatDate = (isoString) => {
+                return new Date(isoString);
+            };
+            $scope.modalEditData.id = debt.debt_id;
+            $scope.modalEditData.name = debt.name;
+            $scope.modalEditData.debt_type = String(debt.type).toLowerCase(); 
+            $scope.modalEditData.amount = Number(debt.amount);
+            $scope.modalEditData.residual =  Number(debt.residual_amount);
+            $scope.modalEditData.date_start = formatDate(debt.date_start);
+            $scope.modalEditData.date_end = formatDate(debt.date_end);
+            document.getElementById('editModal').classList.remove('hidden');
+        };
+
+        $scope.closeEditModal = function () {
+            document.getElementById('editModal').classList.add('hidden');
+        };
+
+        $scope.submitEditForm = function () {
+            // Ambil ID dari data yang akan diedit
+            const debtId = $scope.modalEditData.id;
+            
+            const requestBody = {
+                name: $scope.modalEditData.name,
+                debt_type: $scope.modalEditData.debt_type,
+                amount: $scope.modalEditData.amount,
+                debt_residual: $scope.modalEditData.residual,
+                date_start: $scope.modalEditData.date_start,
+                date_end: $scope.modalEditData.date_end,
+            };
+
+            // Kirim permintaan PUT
+            $http.put(`http://localhost:3000/api/debts/${debtId}`, requestBody)
+                .then(function (response) {
+                    
+                    $scope.closeEditModal(); // Tutup modal
+                    // $scope.loadDebts(); // Perbarui daftar data (jika diperlukan)
+                })
+                .catch(function (error) {
+                    // Tangani error
+                    console.error("Error updating data:", error);
+                    alert("Failed to update data. Please try again.");
+                });
+        };
+        
     }
 ]);
