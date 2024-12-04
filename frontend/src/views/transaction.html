@@ -138,8 +138,8 @@
               <span
                 class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
                 ng-class="{
-                  'bg-green-100 text-green-800': transaction.type === 'income',
-                  'bg-red-100 text-red-800': transaction.type === 'expense'
+                  'bg-green-100 text-green-800': transaction.transaction_type === 'income',
+                  'bg-red-100 text-red-800': transaction.transaction_type === 'expense'
                 }"
               >
                 {{transaction.transaction_type}}
