@@ -19,6 +19,7 @@ angular.module("myApp").controller("DashboardController", [
         $scope.profile = {
           name: response.data.username,
           email: response.data.email,
+          image: response.data.image,
         };
 
         $scope.menus = [
@@ -76,15 +77,68 @@ angular.module("myApp").controller("DashboardController", [
           { name: "Settings", icon: "settings", link: "/dashboard/settings" },
         ];
 
+        $scope.navbar = [
+          {
+            name: "Overview",
+            link: "dashboard/overview",
+            data: {
+              title: "Overview",
+            },
+          },
+          {
+            name: "Transaction",
+            link: "/dashboard/transactions",
+            data: {
+              title: "Transaction",
+            },
+          },
+          {
+            name: "Accounts",
+            link: "/dashboard/accounts",
+            data: {
+              title: "Accounts",
+            },
+          },
+          {
+            name: "Credit Cards",
+            link: "/dashboard/creditcards",
+            data: {
+              title: "Credit Cards",
+            },
+          },
+          {
+            name: "Budgets",
+            link: "/dashboard/budgets",
+            data: {
+              title: "Budgets",
+            },
+          },
+          {
+            name: "Debts",
+            link: "/dashboard/debts",
+            data: {
+              title: "Debts",
+            },
+          },
+          { 
+            name: "Settings", 
+            link: "/dashboard/settings",
+            data: {
+              title: "Settings",
+            }
+          },
+        ];
+
         // Update pageTitle based on the current route
         const currentPath = $location.path();
-        const currentMenu = $scope.menus.find((menu) =>
-          currentPath.includes(menu.link)
+        const currentMenu = $scope.navbar.find((nav) =>
+          currentPath.includes(nav.link)
         );
+
         if (currentMenu) {
           $scope.pageTitle = currentMenu.data.title;
         } else {
-          $scope.pageTitle = "Dashboard"; // Default title if no match
+          $scope.pageTitle = "Dashboard";
         }
       })
       .catch(function (error) {
@@ -100,8 +154,8 @@ angular.module("myApp").controller("DashboardController", [
     // Watch for location change and update pageTitle accordingly
     $scope.$on("$locationChangeSuccess", function () {
       const currentPath = $location.path();
-      const currentMenu = $scope.menus.find((menu) =>
-        currentPath.includes(menu.link)
+      const currentMenu = $scope.navbar.find((nav) =>
+        currentPath.includes(nav.link)
       );
       if (currentMenu) {
         $scope.pageTitle = currentMenu.data.title;

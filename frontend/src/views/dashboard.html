@@ -12,13 +12,14 @@
     </div>
 
     <!-- Main Menu -->
-    <ul class="mt-6 flex-grow overflow-y-auto overflow-hidden " style="-ms-overflow-style: none; scrollbar-width: none;">
+    <ul class="mt-6 flex-grow overflow-y-auto overflow-hidden "
+      style="-ms-overflow-style: none; scrollbar-width: none;">
       <h4 class="text-gray-700 font-medium relative mb-2">
         <div class="w-full h-px bg-[#f9a600] absolute left-0 top-1/2 transition-transform duration-300 ease-in-out">
         </div>
       </h4>
 
-      <!-- Menu Items -->
+      <!-- Menu Items (Sidebar) -->
       <li ng-repeat="menu in menus" class="mt-4">
         <a ng-href="{{ menu.link }}"
           class="flex items-center gap-4 py-3 px-2 text-gray-800 transition-colors duration-300 ease-in-out hover:bg-[#f9a600] hover:text-white rounded-md">
@@ -59,18 +60,21 @@
     </ul>
     <!-- Profile Section -->
     <div class="mt-4 transition-all duration-300 ease-in-out hover:bg-white hover:rounded-md ">
-      <div class="flex items-center">
-        <img src="../images/profile-img.png" alt="Profile Image" class="w-12 rounded-full border-2 border-white" />
-        <div class="ml-6 hidden group-hover:block transition-opacity duration-300 ease-in-out ">
-          <h3 class="text-base font-semibold text-gray-800">{{ profile.name }}</h3>
-          <span class="text-sm font-medium text-gray-600">{{ profile.email }}</span>
+      <a ng-href="/dashboard/settings">
+        <div class="flex items-center">
+          <img ng-src="../images/{{profile.image}}" alt="Profile Image"
+            class="w-12 rounded-full border-2 border-white" />
+          <div class="ml-6 hidden group-hover:block transition-opacity duration-300 ease-in-out ">
+            <h3 class="text-base font-semibold text-gray-800">{{ profile.name }}</h3>
+            <span class="text-sm font-medium text-gray-600">{{ profile.email }}</span>
+          </div>
         </div>
-      </div>
+      </a>
     </div>
 
   </aside>
 
-  <!-- Main Area: Konten Utama -->
+  <!-- Area: Konten Utama -->
   <div class="flex-1 ml-20 bg-gray-100 min-h-screen">
     <!-- Header Dashboard -->
     <div class="bg-[#f9a600] w-full z-10 shadow-md">

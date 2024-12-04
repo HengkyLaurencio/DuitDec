@@ -10,6 +10,7 @@ const accRoutes = require('./features/accounts/accRoute');
 const transactionsRoutes = require('./features/transactions/transactionsRoute');
 const categoryRoutes = require('./features/category/categoryRoute');
 const debtRoutes = require("./features/debt/debtRoute");
+const budgetRoutes = require("./features/budget/budgetRoute");
 
 //cors
 const corsOptions = {
@@ -33,6 +34,7 @@ app.use('/api/transactions', transactionsRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/debts', debtRoutes);
 app.use('/api/accounts', accRoutes);
+app.use('/api/budgets', budgetRoutes);
 
 
 app.listen(port, () => {
