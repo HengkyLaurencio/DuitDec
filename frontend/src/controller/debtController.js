@@ -15,6 +15,12 @@ angular.module('myApp').controller('debtController', [
             date_end: ''
         };
 
+        $scope.filters = {
+            orderBy: 'default',
+            name: '',
+            transactionType: 'all',
+        };
+
         $scope.modalEditData = {};
 
         // Get the user ID from localStorage
@@ -31,6 +37,7 @@ angular.module('myApp').controller('debtController', [
                         })
                         .map(function (debt) {
                             return {
+                                ...debt,
                                 icon: 'account_balance',
                                 color: debt.debt_type === 'debt' ? 'red-500' : 'green-500',
                                 type: debt.debt_type.charAt(0).toUpperCase() + debt.debt_type.slice(1),
@@ -43,9 +50,6 @@ angular.module('myApp').controller('debtController', [
                                 residual: '$' + debt.debt_residual,
                                 amount: debt.amount,
                                 residual_amount: debt.debt_residual,
-                                date_start: debt.date_end,
-                                date_end: debt.date_end,
-                                debt_id: debt.debt_id
                             };
                         });
                 }, function (error) {
@@ -55,9 +59,63 @@ angular.module('myApp').controller('debtController', [
 
         // Call refreshDebts initially to load the data
         $scope.refreshDebts();
+
+        $scope.applyFilters = function () {
+            $http.get('http://localhost:3000/api/debts')
+                .then(function (response) {
+                    let debts = response.data.filter(function (debt) {
+                        // Filter berdasarkan tipe transaksi
+                        if ($scope.filters.transactionType !== 'all' && debt.debt_type !== $scope.filters.transactionType) {
+                            return false;
+                        }
+                        
+                        if ($scope.filters.name && !debt.name.toLowerCase().includes($scope.filters.name.toLowerCase())) {
+                            return false;
+                        }
+                        return true;
+                    });
+
+                    // Urutkan data
+                    if ($scope.filters.orderBy === 'name') {
+                        debts.sort((a, b) => a.name.localeCompare(b.name));
+                    } else if ($scope.filters.orderBy === 'amount') {
+                        debts.sort((a, b) => b.amount - a.amount);
+                    } else if ($scope.filters.orderBy === 'residual') {
+                        debts.sort((a, b) => b.debt_residual - a.debt_residual);
+                    }
+
+                    // Update data yang difilter
+                    $scope.budgets = debts.map(function (debt) {
+                        return {
+                            ...debt,
+                            icon: 'account_balance',
+                            color: debt.debt_type === 'debt' ? 'red-500' : 'green-500',
+                            type: debt.debt_type.charAt(0).toUpperCase() + debt.debt_type.slice(1),
+                            participants: debt.debt_type === 'debt' ? 'You ➔ ' + debt.name : debt.name + ' ➔ You',
+                            dateRange: new Date(debt.date_start).toLocaleDateString() + ' - ' + new Date(debt.date_end).toLocaleDateString(),
+                            progress: ((debt.amount - debt.debt_residual) / debt.amount) * 100,
+                            currentAmount: '$' + (debt.amount - debt.debt_residual).toFixed(2),
+                            totalAmount: '$' + debt.amount,
+                            residual: '$' + debt.debt_residual,
+                            amount: debt.amount,
+                            residual_amount: debt.debt_residual,
+                        };
+                    });
+                }, function (error) {
+                    console.error("Error fetching debts:", error);
+                });
+        };
+
+
         // Cancel button functionality
         $scope.cancel = function () {
-            alert("Cancel action triggered");
+            $scope.filters = {
+                orderBy: 'default',
+                name: '',
+                transactionType: 'all',
+            };
+
+            $scope.applyFilters();
         };
 
         // Open modal with specific type
