@@ -150,8 +150,8 @@ angular.module("myApp").controller("transactionsController", [
       };
     };
 
-    $scope.openAddExpenseModal = function () {
-      $scope.modalTitle = "Add Expense";
+    $scope.openAddOutcomeModal = function () {
+      $scope.modalTitle = "Add Outcome";
       $scope.isIncome = false;
       $scope.isEditing = false;
       $scope.isModalVisible = true;
