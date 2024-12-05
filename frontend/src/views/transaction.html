@@ -195,30 +195,23 @@
       </div>
 
       <div class="p-4">
-        <form ng-submit="addTransaction()" class="space-y-4">
+        <form ng-submit="isEditing ? updateTransaction() : addTransaction()" class="space-y-4">
           <!-- Category Selection -->
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >Category</label
-          >
+          <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
           <select
             ng-model="modalData.selectedCategory"
             class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             required
           >
             <option value="">Select Category</option>
-            <option
-              ng-repeat="category in categories"
-              value="{{category.category_id}}"
-            >
+            <option ng-repeat="category in categories" value="{{category.category_id}}">
               {{category.category_name}}
             </option>
           </select>
-
+        
           <!-- Amount Input -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1"
-              >Amount</label
-            >
+            <label class="block text-sm font-medium text-gray-700 mb-1">Amount</label>
             <input
               type="number"
               ng-model="modalData.transactionAmount"
@@ -228,12 +221,10 @@
               required
             />
           </div>
-
+        
           <!-- Date Input -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1"
-              >Date</label
-            >
+            <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
             <input
               type="date"
               ng-model="modalData.transactionDate"
@@ -241,19 +232,17 @@
               required
             />
           </div>
-
+        
           <!-- Notes Input -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1"
-              >Notes (Optional)</label
-            >
+            <label class="block text-sm font-medium text-gray-700 mb-1">Notes (Optional)</label>
             <textarea
               ng-model="modalData.transactionNotes"
               rows="3"
               class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             ></textarea>
           </div>
-
+        
           <!-- Action Buttons -->
           <div class="flex justify-between space-x-3 pt-4 border-t">
             <!-- Delete Button -->
@@ -265,15 +254,15 @@
             >
               Delete
             </button>
-          
+        
             <!-- Save Button -->
-              <button
-                type="submit"
-                class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Save {{isIncome ? 'Income' : 'Expense'}}
-              </button>
-          </div>          
+            <button
+              type="submit"
+              class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              {{isEditing ? "Update Transaction" : "Save Transaction"}}
+            </button>
+          </div>
         </form>
       </div>
     </div>

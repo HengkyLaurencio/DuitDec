@@ -1,7 +1,7 @@
 angular.module("myApp").controller("transactionsController", [
   "$scope", "$http",
   function ($scope, $http) {
-    // State variables
+    // --- State Variables ---
     $scope.transactionsToShow = [];
     $scope.totalAmount = 0;
     $scope.isModalVisible = false;
@@ -10,9 +10,9 @@ angular.module("myApp").controller("transactionsController", [
     $scope.categoryFilter = "";
     $scope.fromDate = null;
     $scope.toDate = null;
-    $scope.isEditing = false; // New flag to determine add/edit mode
+    $scope.isEditing = false; // Add/Edit mode flag
 
-    // Fetch categories and transactions
+    // --- Fetch Data ---
     $scope.fetchData = function () {
       const userId = localStorage.getItem("id");
       if (!userId) {
@@ -38,7 +38,7 @@ angular.module("myApp").controller("transactionsController", [
             const category = $scope.categories.find(c => c.category_id === transaction.category_id);
             return {
               ...transaction,
-              categoryName: category ? category.category_name : "Unknown"
+              categoryName: category ? category.category_name : "Unknown",
             };
           });
           $scope.calculateTotalAmount();
@@ -57,16 +57,23 @@ angular.module("myApp").controller("transactionsController", [
       }, 0);
     };
 
-    // Modal management
+    // --- Modal Management ---
     $scope.openAddIncomeModal = function () {
-      console.log("isEditing (Add Income):", $scope.isEditing); // Debug
       $scope.modalTitle = "Add Income";
       $scope.isIncome = true;
-      $scope.isEditing = false; // Not editing
+      $scope.isEditing = false;
       $scope.isModalVisible = true;
       $scope.modalData = { selectedCategory: "", transactionAmount: null, transactionDate: "", transactionNotes: "" };
     };
-    
+
+    $scope.openAddExpenseModal = function () {
+      $scope.modalTitle = "Add Expense";
+      $scope.isIncome = false;
+      $scope.isEditing = false;
+      $scope.isModalVisible = true;
+      $scope.modalData = { selectedCategory: "", transactionAmount: null, transactionDate: "", transactionNotes: "" };
+    };
+
     $scope.openTransactionDetails = function (transaction) {
       $scope.isEditing = true;
       $scope.modalTitle = "Edit Transaction";
@@ -81,21 +88,12 @@ angular.module("myApp").controller("transactionsController", [
       };
       $scope.$apply(); // Ensure changes are reflected in the view
     };
-    
-    
-
-    $scope.openAddExpenseModal = function () {
-      $scope.modalTitle = "Add Expense";
-      $scope.isIncome = false;
-      $scope.isEditing = false; // Not editing
-      $scope.isModalVisible = true;
-      $scope.modalData = { selectedCategory: "", transactionAmount: null, transactionDate: "", transactionNotes: "" };
-    };
 
     $scope.closeModal = function () {
       $scope.isModalVisible = false;
     };
 
+    // --- Transaction Management ---
     $scope.addTransaction = function () {
       if (!$scope.modalData.selectedCategory || !$scope.modalData.transactionAmount || !$scope.modalData.transactionDate) {
         alert("Please fill in all required fields.");
@@ -104,7 +102,6 @@ angular.module("myApp").controller("transactionsController", [
 
       const userId = localStorage.getItem("id");
       const endpoint = $scope.isIncome ? "income" : "outcome";
-
       const newTransaction = {
         category_id: $scope.modalData.selectedCategory,
         amount: parseFloat($scope.modalData.transactionAmount),
@@ -133,7 +130,8 @@ angular.module("myApp").controller("transactionsController", [
         transaction_type: $scope.modalData.transactionType,
       };
 
-      $http.put(`http://localhost:3000/api/transactions/${$scope.modalData.transactionId}`, updatedTransaction)
+      const userId = localStorage.getItem("id");
+      $http.put(`http://localhost:3000/api/transactions/${userId}/${$scope.modalData.transactionId}`, updatedTransaction)
         .then(() => {
           $scope.fetchData();
           $scope.closeModal();
@@ -145,19 +143,64 @@ angular.module("myApp").controller("transactionsController", [
     };
 
     $scope.deleteTransaction = function () {
-      if (confirm("Are you sure you want to delete this transaction?")) {
-        $http.delete(`http://localhost:3000/api/transactions/${$scope.modalData.transactionId}`)
+      const userId = localStorage.getItem("id");
+      const transactionId = $scope.modalData.transactionId;
+
+      if (!transactionId) {
+        alert("No transaction selected to delete.");
+        return;
+      }
+
+      $http.delete(`http://localhost:3000/api/transactions/${userId}/${transactionId}`)
+        .then(() => {
+          $scope.fetchData();
+          $scope.closeModal();
+        })
+        .catch(error => {
+          console.error("Error deleting transaction:", error);
+          alert("Failed to delete transaction.");
+        });
+    };
+
+    $scope.saveTransaction = function () {
+      if (!$scope.modalData.selectedCategory || !$scope.modalData.transactionAmount || !$scope.modalData.transactionDate) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+
+      const userId = localStorage.getItem("id");
+      const transaction = {
+        category_id: $scope.modalData.selectedCategory,
+        amount: parseFloat($scope.modalData.transactionAmount),
+        date: $scope.modalData.transactionDate,
+        notes: $scope.modalData.transactionNotes || "",
+        transaction_type: $scope.isIncome ? "income" : "outcome",
+      };
+
+      if (!$scope.isEditing) {
+        $http.post(`http://localhost:3000/api/transactions/${transaction.transaction_type}/${userId}`, transaction)
           .then(() => {
             $scope.fetchData();
             $scope.closeModal();
           })
           .catch(error => {
-            console.error("Error deleting transaction:", error);
-            alert("Failed to delete transaction.");
+            console.error("Error adding transaction:", error);
+            alert("Failed to add transaction.");
+          });
+      } else {
+        $http.put(`http://localhost:3000/api/transactions/${userId}/${$scope.modalData.transactionId}`, transaction)
+          .then(() => {
+            $scope.fetchData();
+            $scope.closeModal();
+          })
+          .catch(error => {
+            console.error("Error updating transaction:", error);
+            alert("Failed to update transaction.");
           });
       }
     };
 
+    // --- Initialization ---
     $scope.fetchData();
   }
 ]);
