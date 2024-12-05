@@ -1,5 +1,6 @@
 <style>
-  #chart-this-month, #chart-last-month {
+  #chart-this-month,
+  #chart-last-month {
     width: 140px !important;
     height: 140px !important;
   }
@@ -10,13 +11,20 @@
   <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
     <div class="p-6 bg-white rounded-2xl shadow-lg">
       <h3 class="text-xl font-semibold text-gray-800 mb-4">Summary</h3>
-      <div class="flex justify-between">
-        <p>Balance:</p>
-        <p class="text-green-500 font-bold">{{ summary.balance | currency }}</p>
+      <div>
+        <!-- List of Accounts -->
+        <div ng-repeat="account in accounts" class="mb-2">
+          <div class="flex justify-between items-center">
+            <p class="text-gray-600 font-medium">{{ account.name }}</p>
+            <p class="text-gray-800">{{ account.balance | currency }}</p>
+          </div>
+        </div>
       </div>
       <hr class="my-4">
-      <div class="text-right font-bold text-green-500">
-        {{ summary.total | currency }}
+      <!-- Total Balance -->
+      <div class="flex justify-between font-bold text-green-500">
+        <p>Total:</p>
+        <p>{{ summary.total | currency }}</p>
       </div>
     </div>
 
@@ -76,5 +84,5 @@
     </div>
   </div>
 
-  
+
 </div>
