@@ -84,5 +84,31 @@
     </div>
   </div>
 
+  <div class="bg-white rounded-lg p-5 shadow-md mb-5" ng-if="allBudgets.length > 0">
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">Budgets</h2>
+    <div class="flex items-center mb-4" ng-repeat="budget in allBudgets">
+      <span class="material-symbols-outlined text-5xl text-orange-500 mr-4">{{ budget.icon }}</span>
+      <div class="flex-grow">
+        <div class="font-semibold mb-1">{{ budget.category }}</div>
+        <div class="bg-gray-300 rounded-full h-2 mb-2 overflow-hidden">
+          <div class="h-full transition-width duration-300"
+            ng-class="{'bg-green-500': budget.percent <= 100, 'bg-red-500': budget.percent > 100}"
+            style="width: {{ budget.percent }}%;"></div>
+        </div>
+        <div class="flex justify-between items-center">
+          <div class="text-sm text-gray-800">
+            ${{ budget.used_amout }} / ${{ budget.budget_amout }} <span
+              ng-class="{'text-green-500': budget.percent <= 100, 'text-red-500': budget.percent > 100}"
+              class="font-semibold">({{ budget.percent }}%)</span>
+          </div>
+        </div>
+        <div class="text-xs"
+          ng-class="{'text-gray-500': budget.residual >= 0, 'text-red-500 font-semibold': budget.residual < 0}">
+          Residual amount: ${{ budget.residual }}
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 </div>
