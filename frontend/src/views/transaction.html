@@ -7,23 +7,22 @@
         FILTER
       </h3>
       <form class="filter-form">
-        <!-- Category Filter -->
+        <!-- Category Filter -->  
         <div class="mb-4">
           <label for="category-filter" class="block font-medium text-[#555]">Category</label>
-          <select id="category-filter" ng-model="filters.category" class="w-full p-3 border rounded-md"
-            ng-change="filterTransactions()">
+          <select id="category-filter" ng-model="filter.category" class="w-full p-3 border rounded-md"
+            ng-change="applyFilters()">
             <option value="">All Categories</option>
             <option ng-repeat="category in categories" value="{{category.category_id}}">
               {{category.category_name}}
             </option>
           </select>
         </div>
-
         <!-- Transaction Type Filter -->
         <div class="mb-4">
           <label for="transaction-type" class="block font-medium text-[#555]">Type</label>
-          <select id="transaction-type" ng-model="filters.transactionType" class="w-full p-3 border rounded-md"
-            ng-change="filterTransactions()">
+          <select id="transaction-type" ng-model="filter.type" class="w-full p-3 border rounded-md"
+            ng-change="applyFilters()">
             <option value="">All Types</option>
             <option value="income">Income</option>
             <option value="outcome">Outcome</option>
@@ -33,13 +32,13 @@
         <!-- Date Range Filters -->
         <div class="mb-4">
           <label for="from-date" class="block font-medium text-[#555]">From</label>
-          <input id="from-date" type="date" ng-model="filters.fromDate" class="w-full p-3 border rounded-md"
-            ng-change="filterTransactions()" />
+          <input id="from-date" type="date" ng-model="filter.dateRange.from" class="w-full p-3 border rounded-md"
+            ng-change="applyFilters()" />
         </div>
         <div class="mb-4">
           <label for="to-date" class="block font-medium text-[#555]">To</label>
-          <input id="to-date" type="date" ng-model="filters.toDate" class="w-full p-3 border rounded-md"
-            ng-change="filterTransactions()" />
+          <input id="to-date" type="date" ng-model="filter.dateRange.to" class="w-full p-3 border rounded-md"
+            ng-change="applyFilters()" />
         </div>
 
         <!-- Cancel Button -->
@@ -47,6 +46,13 @@
           <button type="button" class="w-full p-3 bg-[#f9a600] text-white rounded-lg cursor-pointer hover:bg-[#f8b623]"
             ng-click="cancelFilters()">
             CANCEL
+          </button>
+        </div>
+
+        <div class="mt-4">
+          <button type="button" class="w-full p-3 bg-blue-600 text-white rounded-lg cursor-pointer hover:bg-blue-700"
+            ng-click="filterTransactions()">
+            APPLY FILTERS
           </button>
         </div>
       </form>
