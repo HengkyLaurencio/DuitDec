@@ -81,6 +81,22 @@ angular.module("myApp").controller("transactionsController", [
         });
     };
 
+    $scope.cancelFilters = function () {
+      // Reset filter properties to their initial state
+      $scope.filter = {
+        category: "",
+        type: "",
+        dateRange: {
+          from: null,
+          to: null,
+        },
+      };
+    
+      // Apply filters to reset the transactionsToShow list
+      $scope.applyFilters();
+    };
+    
+
     // $scope.fetchData();
     $scope.getTransactions(userId);
     // $scope.fetchTransactions(userId);

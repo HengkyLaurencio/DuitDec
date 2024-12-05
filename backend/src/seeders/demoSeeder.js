@@ -7,7 +7,7 @@ async function seedDemoData() {
 
 
         // Hash the password
-        const hashedPassword = await bcrypt.hash('password123', 10);
+        const hashedPassword = await bcrypt.hash('demo123', 10);
 
         // Insert one user with hashed password
         const userQuery = `
@@ -28,9 +28,9 @@ async function seedDemoData() {
         // Insert multiple transactions
         const transactions = [
             ['income', 1, 1000, 'Salary', '2024-12-01'],
-            ['outcome', 2, 200, 'Purchase of tools', '2024-12-02'],
-            ['outcome', 3, 150, 'Electronics purchase', '2024-12-03'],
-            ['income', 4, 500, 'Freelance work', '2024-12-04'],
+            ['outcome', 2, 200, 'Harry Potter', '2024-12-02'],
+            ['outcome', 3, 150, 'Purchase of tools', '2024-12-03'],
+            ['income', 1, 500, 'Freelance work', '2024-12-04'],
         ];
 
         for (const [type, categoryId, amount, notes, date] of transactions) {

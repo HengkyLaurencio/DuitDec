@@ -1,7 +1,7 @@
 <div ng-controller="transactionsController" class="container mx-auto px-4 py-6">
   <!-- Filters Section -->
   <div class="flex">
-    <aside style="width: 25%; max-height: fit-content;" class="bg-[#fdfcfc] rounded-lg shadow-md p-6 flex-shrink-0">
+    <aside style="width: 25%; height: 550px;" class="bg-[#fdfcfc] rounded-lg shadow-md p-6 flex-shrink-0">
       <h3 style="border-bottom-width: 4px; font-size: 30px"
         class="font-semibold text-center text-[#192227] border-b border-[#807e7e] border-dashed pb-3 mb-4">
         FILTER
@@ -48,13 +48,6 @@
             CANCEL
           </button>
         </div>
-
-        <div class="mt-4">
-          <button type="button" class="w-full p-3 bg-blue-600 text-white rounded-lg cursor-pointer hover:bg-blue-700"
-            ng-click="filterTransactions()">
-            APPLY FILTERS
-          </button>
-        </div>
       </form>
     </aside>
 
@@ -74,7 +67,7 @@
     </div>
 
     <!-- Transactions List -->
-    <section style="max-height: 1000px" class="bg-[#fdfcfc] rounded-lg shadow-md p-6 flex-1 ml-6">
+    <section style="height: 550px" class="bg-[#fdfcfc] rounded-lg shadow-md p-6 flex-1 ml-6">
       <header style="border-bottom-width: 4px"
         class="flex justify-between items-center border-b border-[#807e7e] border-dashed pb-3 mb-4">
         <h3 style="font-size: 30px" class="font-semibold text-[#192227]">

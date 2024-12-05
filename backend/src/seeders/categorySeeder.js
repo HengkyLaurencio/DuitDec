@@ -2,6 +2,7 @@ const db = require('../config/database');
 
 async function seedCategories() {
   const categories = [
+    { category_name: 'Salary', category_icon: 'attach_money' },
     { category_name: 'Books', category_icon: 'menu_book' },
     { category_name: 'Tools', category_icon: 'construction' },
     { category_name: 'Electronics', category_icon: 'devices' },
