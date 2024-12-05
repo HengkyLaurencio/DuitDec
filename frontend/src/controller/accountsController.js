@@ -7,6 +7,7 @@ angular.module("myApp").controller("accountsController", [
     $scope.wallets = [];
     $scope.isModalOpen = false;
     $scope.newWallet = {};
+    $scope.total = 0;
 
     // Fetch Wallets from API
     $scope.fetchWallets = function () {
@@ -17,8 +18,9 @@ angular.module("myApp").controller("accountsController", [
             name: account.account_name,
             amount: account.balance,
             isVisible: true,
-            account_id: account.account_id, // Asumsikan API memberikan ID akun
+            account_id: account.account_id,
           }));
+          $scope.total = response.data.total;
         })
         .catch((error) => {
           console.error("Error fetching wallets:", error);
@@ -76,10 +78,15 @@ angular.module("myApp").controller("accountsController", [
 
     // Calculate Total Amount
     $scope.getTotal = function () {
-      return $scope.wallets.reduce((total, wallet) => total + wallet.amount, 0);
+      return $scope.total;
     };
 
     // Initialize Wallets
     $scope.fetchWallets();
+
+    $scope.toggleVisibility = function (wallet) {
+      wallet.isVisible = !wallet.isVisible;
+    };
+
   },
 ]);

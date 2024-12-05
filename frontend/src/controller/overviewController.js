@@ -3,11 +3,8 @@ angular.module("myApp").controller("OverviewController", [
   "$http",
   function ($scope, $http) {
     // Inisialisasi summary, thisMonth, dan lastMonth
-    $scope.summary = {
-      balance: 999999.12,
-      creditCards: -11111.11,
-      total: 123123.12 - 11111.11,
-    };
+    $scope.summary = { accounts: [], total: 0 };
+    $scope.total = 
     $scope.thisMonth = {
       income: 1500.0,
       outcome: 396.76,
@@ -18,7 +15,7 @@ angular.module("myApp").controller("OverviewController", [
       outcome: 396.76,
       total: 1500.0 - 396.76,
     };
-
+  
     // Fetch data dari API untuk accounts
     const userId = localStorage.getItem("id"); // Ganti dengan ID pengguna yang sesuai
     $scope.accounts = [];
@@ -28,16 +25,10 @@ angular.module("myApp").controller("OverviewController", [
         if (response.data && response.data.accounts) {
           $scope.accounts = response.data.accounts.map((account) => ({
             name: account.account_name,
-            balance: parseFloat(account.balance), // Konversi balance menjadi angka
-            currency: "USD", // Default currency, sesuaikan jika perlu
+            balance: parseFloat(account.balance), 
           }));
 
-          // Update summary balance berdasarkan total akun
-          const totalBalance = $scope.accounts.reduce(
-            (total, account) => total + account.balance,
-            0
-          );
-          $scope.summary.balance = totalBalance;
+        $scope.summary.total = parseFloat(response.data.total);
         }
       })
       .catch((error) => {

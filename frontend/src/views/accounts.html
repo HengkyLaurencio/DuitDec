@@ -1,86 +1,86 @@
+<style>
+    .toggle {
+        z-index: 0 !important;
+    }
+</style>
+<div class="flex flex-col mt-10 px-6">
+    <!-- Floating Button -->
+    <button id="add-wallet"
+        class="fixed bottom-5 right-5 bg-green-500 text-white text-3xl rounded-full w-12 h-12 flex items-center justify-center shadow-md"
+        ng-click="openModal()">
+        +
+    </button>
 
-    <style>
-        .toggle {
-            z-index: 0 !important;
-        }
-    </style>
-    <div class="flex flex-col mt-10 px-6">
-        <!-- Floating Button -->
-        <button id="add-wallet"
-            class="fixed bottom-5 right-5 bg-green-500 text-white text-3xl rounded-full w-12 h-12 flex items-center justify-center shadow-md"
-            ng-click="openModal()">
-            +
-        </button>
-
-        <!-- Modal -->
-        <div id="wallet-modal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
-            ng-show="isModalOpen">
-            <div class="bg-white rounded-lg p-6 w-80">
-                <button class="close-button absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-xl"
-                    ng-click="closeModal()">
-                    &times;
+    <!-- Modal -->
+    <div id="wallet-modal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+        ng-show="isModalOpen">
+        <div class="bg-white rounded-lg p-6 w-80">
+            <button class="close-button absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-xl"
+                ng-click="closeModal()">
+                &times;
+            </button>
+            <h2 class="text-lg font-semibold mb-4">Add Wallet</h2>
+            <form id="wallet-form" ng-submit="addWallet()">
+                <div class="mb-4">
+                    <label for="wallet-name" class="block font-medium">Wallet Name:</label>
+                    <input type="text" id="wallet-name" ng-model="newWallet.name" required
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring focus:ring-green-500" />
+                </div>
+                <div class="mb-4">
+                    <label for="wallet-amount" class="block font-medium">Amount:</label>
+                    <input type="number" id="wallet-amount" ng-model="newWallet.amount" step="0.01" required
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring focus:ring-green-500" />
+                </div>
+                <button type="submit" class="w-full bg-green-500 text-white rounded-md px-3 py-2 hover:bg-green-600">
+                    Add Wallet
                 </button>
-                <h2 class="text-lg font-semibold mb-4">Add Wallet</h2>
-                <form id="wallet-form" ng-submit="addWallet()">
-                    <div class="mb-4">
-                        <label for="wallet-name" class="block font-medium">Wallet Name:</label>
-                        <input type="text" id="wallet-name" ng-model="newWallet.name" required
-                            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring focus:ring-green-500" />
-                    </div>
-                    <div class="mb-4">
-                        <label for="wallet-amount" class="block font-medium">Amount:</label>
-                        <input type="number" id="wallet-amount" ng-model="newWallet.amount" step="0.01" required
-                            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring focus:ring-green-500" />
-                    </div>
-                    <button type="submit"
-                        class="w-full bg-green-500 text-white rounded-md px-3 py-2 hover:bg-green-600">
-                        Add Wallet
-                    </button>
-                </form>
-            </div>
+            </form>
         </div>
+    </div>
 
-        <!-- Summary Card -->
-        <div class="bg-white w-full shadow-md rounded-lg p-4 mb-6 mx-auto max-w-5xl">
-            <div class="flex justify-between items-center">
-                <button id="dropdown-button" class="material-symbols-outlined text-gray-600 cursor-pointer">
-                    arrow_drop_down
-                </button>
-                <p class="text-lg font-semibold">
-                    Total: <span class="text-green-600" id="total-amount">{{ getTotal() | currency }}</span>
+    <!-- Summary Card -->
+    <div class="bg-white w-full shadow-md rounded-lg p-4 mb-6 mx-auto max-w-5xl">
+        <div class="flex justify-between items-center">
+            <button id="dropdown-button" class="material-symbols-outlined text-gray-600 cursor-pointer">
+                arrow_drop_down
+            </button>
+            <p class="text-lg font-semibold">
+                Total: <span class="text-green-600" id="total-amount">{{ getTotal() | currency }}</span>
+            </p>
+        </div>
+        <div id="chart-container" class="mt-4 hidden">
+            <canvas class="donut-chart" id="chart"></canvas>
+        </div>
+    </div>
+
+    <!-- Account Cards -->
+    <div class="w-full space-y-4 mx-auto max-w-5xl">
+        <div class="bg-white shadow-md rounded-lg p-4" ng-repeat="wallet in wallets track by $index">
+            <div class="flex justify-between">
+                <p class="font-medium">{{ wallet.name }}</p>
+                <p id="wallet-amount" class="text-green-600 font-semibold" ng-show="wallet.isVisible">
+                    {{ wallet.amount | currency }}
                 </p>
             </div>
-            <div id="chart-container" class="mt-4 hidden">
-                <canvas class="donut-chart" id="chart"></canvas>
-            </div>
-        </div>
 
-        <!-- Account Cards -->
-        <div class="w-full space-y-4 mx-auto max-w-5xl">
-            <div class="bg-white shadow-md rounded-lg p-4" ng-repeat="wallet in wallets track by $index">
-                <div class="flex justify-between">
-                    <p class="font-medium">{{ wallet.name }}</p>
-                    <p id="wallet-amount" class="text-green-600 font-semibold">{{ wallet.amount | currency }}</p>
-                </div>
-
-                <div class="z-[-1] flex justify-between items-center mt-4">
-                    <label class="inline-flex items-center cursor-pointer">
-                        <input type="checkbox" class="sr-only peer" ng-model="wallet.isVisible" />
-                        <div
-                            class=" relative w-11 h-6 bg-gray-200 peer-focus:outline-none dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600">
-                        </div>
-                    </label>
-                    <button class="material-symbols-outlined text-gray-600 cursor-pointer">
-                        visibility
-                    </button>
-                    <button class="material-symbols-outlined text-red-500 cursor-pointer"
-                        ng-click="deleteWallet($index)">
-                        delete
-                    </button>
-                </div>
+            <div class="relative z-10 flex justify-between items-center mt-4">
+                <label class="inline-flex items-center cursor-pointer z-10">
+                    <input type="checkbox" class="sr-only peer" ng-model=true />
+                    <div
+                        class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600">
+                    </div>
+                </label>
+                <button class="material-symbols-outlined text-gray-600 cursor-pointer z-20" ng-click="toggleVisibility(wallet)">
+                    visibility
+                </button>
+                <button class="material-symbols-outlined text-red-500 cursor-pointer z-20" ng-click="deleteWallet($index)">
+                    delete
+                </button>
             </div>
         </div>
     </div>
+
+</div>
 </body>
 
 </html>
