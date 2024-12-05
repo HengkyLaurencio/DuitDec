@@ -10,9 +10,9 @@ angular.module("myApp").controller("transactionsController", [
     $scope.categoryFilter = "";
     $scope.fromDate = null;
     $scope.toDate = null;
-    $scope.isEditing = false; // Add/Edit mode flag
+    $scope.isEditing = false; 
 
-    //punya luis
+    // Punya luis
     const userId = localStorage.getItem("id");
     $scope.transactions = [];
     $scope.transactionsToShow = [];
@@ -34,8 +34,8 @@ angular.module("myApp").controller("transactionsController", [
       $http
         .get("http://localhost:3000/api/category/")
         .then((response) => {
-          $scope.categories = response.data; // Store categories
-          return $scope.fetchTransactions(userId); // Fetch transactions
+          $scope.categories = response.data; 
+          return $scope.fetchTransactions(userId); 
         })
         .catch((error) => {
           console.error("Error fetching categories:", error);
@@ -82,7 +82,6 @@ angular.module("myApp").controller("transactionsController", [
     };
 
     $scope.cancelFilters = function () {
-      // Reset filter properties to their initial state
       $scope.filter = {
         category: "",
         type: "",
@@ -92,14 +91,14 @@ angular.module("myApp").controller("transactionsController", [
         },
       };
     
-      // Apply filters to reset the transactionsToShow list
+
       $scope.applyFilters();
     };
     
 
-    // $scope.fetchData();
+
     $scope.getTransactions(userId);
-    // $scope.fetchTransactions(userId);
+
 
     $scope.fetchTransactions = function (userId) {
       return $http
@@ -107,7 +106,6 @@ angular.module("myApp").controller("transactionsController", [
         .then((response) => {
           $scope.transactionsToShow = response.data.transactions.map(
             (transaction) => {
-              // Find category name using category_id
               const category = $scope.categories.find(
                 (c) => c.category_id === transaction.category_id
               );
@@ -117,7 +115,7 @@ angular.module("myApp").controller("transactionsController", [
               };
             }
           );
-          $scope.calculateTotalAmount(); // Example for calculating totals
+          $scope.calculateTotalAmount(); 
         })
         .catch((error) => {
           console.error("Error fetching transactions:", error);
@@ -150,8 +148,8 @@ angular.module("myApp").controller("transactionsController", [
       };
     };
 
-    $scope.openAddExpenseModal = function () {
-      $scope.modalTitle = "Add Expense";
+    $scope.openAddOutcomeModal = function () {
+      $scope.modalTitle = "Add Outcome";
       $scope.isIncome = false;
       $scope.isEditing = false;
       $scope.isModalVisible = true;
