@@ -12,7 +12,7 @@
     </button>
 
     <!-- Modal -->
-    <div id="wallet-modal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+    <div id="wallet-modal" class=" z-[10000] fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
         ng-show="isModalOpen">
         <div class="bg-white rounded-lg p-6 w-80">
             <button class="close-button absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-xl"
@@ -63,14 +63,14 @@
                 </p>
             </div>
 
-            <div class="relative z-10 flex justify-between items-center mt-4">
-                <label class="inline-flex items-center cursor-pointer z-10">
+            <div class="relative flex justify-between items-center mt-4">
+                <label class="inline-flex items-center cursor-pointer ">
                     <input type="checkbox" class="sr-only peer" ng-model=true />
                     <div
                         class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600">
                     </div>
                 </label>
-                <button class="material-symbols-outlined text-gray-600 cursor-pointer z-20" ng-click="toggleVisibility(wallet)">
+                <button class="overflow-hidden material-symbols-outlined text-gray-600 cursor-pointer -z-1" ng-click="toggleVisibility(wallet)">
                     visibility
                 </button>
                 <button class="material-symbols-outlined text-red-500 cursor-pointer z-20" ng-click="deleteWallet($index)">
