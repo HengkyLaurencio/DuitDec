@@ -3,24 +3,31 @@
         <div class="filter-title text-lg font-bold mb-4">FILTER</div>
         <form class="filter-form">
             <label for="orderBy" class="block mb-2">Order by</label>
-            <select id="orderBy" name="orderBy" class="w-full p-2 mb-3 border border-gray-300 rounded">
+            <select id="orderBy" name="orderBy" class="w-full p-2 mb-3 border border-gray-300 rounded"
+                ng-model="filters.orderBy" ng-change="applyFilters()">
                 <option value="default">Default</option>
+                <option value="name">Name</option>
+                <option value="amount">Amount</option>
+                <option value="residual">Residual</option>
             </select>
 
-            <label for="fromTo" class="block mb-2">From / To</label>
-            <input type="text" id="fromTo" name="fromTo" class="w-full p-2 mb-3 border border-gray-300 rounded">
+            <label for="name" class="block mb-2">Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter name"
+                class="w-full p-2 mb-3 border border-gray-300 rounded" ng-model="filters.name"
+                ng-change="applyFilters()">
 
             <label for="transactionType" class="block mb-2">Type</label>
-            <select id="transactionType" name="transactionType" class="w-full p-2 mb-3 border border-gray-300 rounded">
+            <select id="transactionType" name="transactionType" class="w-full p-2 mb-3 border border-gray-300 rounded"
+                ng-model="filters.transactionType" ng-change="applyFilters()">
                 <option value="all">All Types</option>
-                <option value="debts">Debts</option>
-                <option value="credits">Credits</option>
+                <option value="debt">Debts</option>
+                <option value="credit">Credits</option>
             </select>
 
             <div class="button-container mt-4">
                 <button type="button"
-                        class="cancel-btn bg-[#f9a600] text-white border-none p-2 w-full rounded cursor-pointer hover:bg-[#f9a600]"
-                        ng-click="cancel()">
+                    class="cancel-btn bg-[#f9a600] text-white border-none p-2 w-full rounded cursor-pointer hover:bg-[#f9a600]"
+                    ng-click="cancel()">
                     CANCEL
                 </button>
             </div>
@@ -51,16 +58,19 @@
                     </button>
                 </div>
             </div>
-            <div class="residual">Residual amount: <span class="text-{{budget.color}} font-bold">{{budget.residual}}</span></div>
+            <div class="residual">Residual amount: <span
+                    class="text-{{budget.color}} font-bold">{{budget.residual}}</span></div>
         </div>
     </div>
 
     <!-- Floating Buttons -->
     <div class="fixed bottom-5 right-5 flex flex-col gap-2 z-[999]">
-        <button ng-click="openModal('credit')" class="w-16 h-16 bg-green-600 text-white text-2xl rounded-full shadow-lg hover:bg-green-700">
+        <button ng-click="openModal('credit')"
+            class="w-16 h-16 bg-green-600 text-white text-2xl rounded-full shadow-lg hover:bg-green-700">
             +
         </button>
-        <button ng-click="openModal('debt')" class="w-16 h-16 bg-red-600 text-white text-2xl rounded-full shadow-lg hover:bg-red-700">
+        <button ng-click="openModal('debt')"
+            class="w-16 h-16 bg-red-600 text-white text-2xl rounded-full shadow-lg hover:bg-red-700">
             −
         </button>
     </div>
@@ -71,7 +81,7 @@
             <h2 id="modal-title" class="text-center text-xl font-bold mb-5">
                 Add New {{ modalData.debt_type === 'debt' ? 'Debt' : 'Credit' }}
             </h2>
-            
+
             <form ng-submit="submitForm()" class="space-y-4">
                 <div>
                     <label for="person" class="block font-bold mb-1">Person</label>
@@ -98,16 +108,18 @@
                 </div>
 
                 <div class="flex justify-between gap-4">
-                    <button type="button" ng-click="closeModal()" class="w-full px-4 py-2 bg-gray-200 text-gray-600 rounded-md hover:bg-gray-300">
+                    <button type="button" ng-click="closeModal()"
+                        class="w-full px-4 py-2 bg-gray-200 text-gray-600 rounded-md hover:bg-gray-300">
                         CANCEL
                     </button>
-                    <button type="submit" class="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                    <button type="submit"
+                        class="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
                         SAVE
                     </button>
                 </div>
             </form>
         </div>
-    </div>    
+    </div>
 
 
     <div id="editModal" class="hidden fixed inset-0 z-[10000] bg-black bg-opacity-50 animate-fade-in">
@@ -115,14 +127,15 @@
             <h2 id="modal-title" class="text-center text-xl font-bold mb-5">
                 Edit Debt/Credit
             </h2>
-            
+
             <form ng-submit="submitEditForm()" class="space-y-4">
                 <input type="hidden" id="id" ng-model="modalEditData.id">
                 <input type="hidden" id="id" ng-model="modalEditData.debt_type">
-                
+
                 <div>
                     <label for="person" class="block font-bold mb-1">Person</label>
-                    <input type="text" id="person" ng-model="modalEditData.name" placeholder="Enter person's name" required
+                    <input type="text" id="person" ng-model="modalEditData.name" placeholder="Enter person's name"
+                        required
                         class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-green-300">
                 </div>
 
@@ -151,14 +164,16 @@
                 </div>
 
                 <div class="flex justify-between gap-4">
-                    <button type="button" ng-click="closeEditModal()" class="w-full px-4 py-2 bg-gray-200 text-gray-600 rounded-md hover:bg-gray-300">
+                    <button type="button" ng-click="closeEditModal()"
+                        class="w-full px-4 py-2 bg-gray-200 text-gray-600 rounded-md hover:bg-gray-300">
                         CANCEL
                     </button>
-                    <button type="submit" class="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                    <button type="submit"
+                        class="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
                         SAVE
                     </button>
                 </div>
             </form>
         </div>
-    </div>    
+    </div>
 </div>
