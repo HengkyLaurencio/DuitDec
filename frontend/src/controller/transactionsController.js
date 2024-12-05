@@ -1,58 +1,41 @@
 angular.module("myApp").controller("transactionsController", [
   "$scope", "$http",
   function ($scope, $http) {
-    // Initialize transactions and totals
+    // State variables
     $scope.transactionsToShow = [];
     $scope.totalAmount = 0;
     $scope.isModalVisible = false;
     $scope.modalTitle = "";
     $scope.categories = [];
-    
-    // Initialize filter models
     $scope.categoryFilter = "";
     $scope.fromDate = null;
     $scope.toDate = null;
+    $scope.isEditing = false; // New flag to determine add/edit mode
 
-    const categoryMap = {
-      "💼 Salary": "Salary",
-      "🎁 Bonus": "Bonus",
-      "💰 Interest": "Interest",
-      "🎉 Gifts": "Gifts",
-      "📈 Investments": "Investments",
-      "🍽️ Food": "Food",
-      "🎬 Entertainment": "Entertainment",
-      "🛍️ Shopping": "Shopping",
-      "⛽ Fuel": "Fuel",
-      "🔧 Others": "Others"
+    // Fetch categories and transactions
+    $scope.fetchData = function () {
+      const userId = localStorage.getItem("id");
+      if (!userId) {
+        alert("User ID not found. Please log in.");
+        return;
+      }
+
+      $http.get("http://localhost:3000/api/category/")
+        .then(response => {
+          $scope.categories = response.data;
+          return $scope.fetchTransactions(userId);
+        })
+        .catch(error => {
+          console.error("Error fetching categories:", error);
+          alert("Failed to load categories.");
+        });
     };
 
-    const incomeCategories = Object.keys(categoryMap).filter(key =>
-      ["Salary", "Bonus", "Interest", "Gifts", "Investments"].includes(categoryMap[key])
-    );
-    const expenseCategories = Object.keys(categoryMap).filter(key =>
-      ["Food", "Entertainment", "Shopping", "Fuel", "Others"].includes(categoryMap[key])
-    );
-
-    // Initialize modal data with current date
-    function initializeModalData() {
-      return {
-        selectedCategory: "",
-        transactionAmount: null,
-        transactionDate: "",
-        transactionNotes: ""
-      };
-    }
-
-    $scope.modalData = initializeModalData();
-
-    // Fetch transactions from backend
-    $scope.fetchTransactions = function () {
-      const userId = localStorage.getItem("id");
-
-      $http.get(`http://localhost:3000/api/transactions/${userId}`)
+    $scope.fetchTransactions = function (userId) {
+      return $http.get(`http://localhost:3000/api/transactions/${userId}`)
         .then(response => {
-          $scope.transactionsToShow = response.data.transactions.map((transaction) => {
-            const category = $scope.categories.find((c) => c.category_id === transaction.category_id);
+          $scope.transactionsToShow = response.data.transactions.map(transaction => {
+            const category = $scope.categories.find(c => c.category_id === transaction.category_id);
             return {
               ...transaction,
               categoryName: category ? category.category_name : "Unknown"
@@ -62,18 +45,10 @@ angular.module("myApp").controller("transactionsController", [
         })
         .catch(error => {
           console.error("Error fetching transactions:", error);
-          alert("Error loading transactions. Please try again.");
+          alert("Failed to load transactions.");
         });
     };
 
-    $http.get("http://localhost:3000/api/category/").then(
-      (response) => {
-        $scope.categories = response.data; 
-        $scope.fetchTransactions();
-      }
-    );
-
-    // Calculate total amount
     $scope.calculateTotalAmount = function () {
       $scope.totalAmount = $scope.transactionsToShow.reduce((total, transaction) => {
         return transaction.transaction_type === "income"
@@ -82,36 +57,48 @@ angular.module("myApp").controller("transactionsController", [
       }, 0);
     };
 
-    // Open income modal
+    // Modal management
     $scope.openAddIncomeModal = function () {
+      console.log("isEditing (Add Income):", $scope.isEditing); // Debug
       $scope.modalTitle = "Add Income";
-      $scope.categoryOptions = incomeCategories;
       $scope.isIncome = true;
+      $scope.isEditing = false; // Not editing
       $scope.isModalVisible = true;
-      $scope.modalData = initializeModalData();
+      $scope.modalData = { selectedCategory: "", transactionAmount: null, transactionDate: "", transactionNotes: "" };
     };
+    
+    $scope.openTransactionDetails = function (transaction) {
+      $scope.isEditing = true;
+      $scope.modalTitle = "Edit Transaction";
+      $scope.isModalVisible = true;
+      $scope.modalData = {
+        transactionId: transaction.transaction_id,
+        selectedCategory: transaction.category_id,
+        transactionAmount: transaction.amount,
+        transactionDate: new Date(transaction.date),
+        transactionNotes: transaction.notes,
+        transactionType: transaction.transaction_type,
+      };
+      $scope.$apply(); // Ensure changes are reflected in the view
+    };
+    
+    
 
-    // Open expense modal
     $scope.openAddExpenseModal = function () {
       $scope.modalTitle = "Add Expense";
-      $scope.categoryOptions = expenseCategories;
       $scope.isIncome = false;
+      $scope.isEditing = false; // Not editing
       $scope.isModalVisible = true;
-      $scope.modalData = initializeModalData();
+      $scope.modalData = { selectedCategory: "", transactionAmount: null, transactionDate: "", transactionNotes: "" };
     };
 
-    // Close modal
     $scope.closeModal = function () {
       $scope.isModalVisible = false;
     };
 
-    const category = $scope.categories.find(c => c.category_id === transaction.category_id);
-    categoryName = category ? category.category_name : "Unknown"
-
-    // Add transaction
     $scope.addTransaction = function () {
       if (!$scope.modalData.selectedCategory || !$scope.modalData.transactionAmount || !$scope.modalData.transactionDate) {
-        alert("Please fill in all required fields");
+        alert("Please fill in all required fields.");
         return;
       }
 
@@ -121,43 +108,56 @@ angular.module("myApp").controller("transactionsController", [
       const newTransaction = {
         category_id: $scope.modalData.selectedCategory,
         amount: parseFloat($scope.modalData.transactionAmount),
-        date: $scope.modalData.transactionDate || "2030-11-01",  
+        date: $scope.modalData.transactionDate,
         notes: $scope.modalData.transactionNotes || "",
         transaction_type: endpoint,
       };
-      
+
       $http.post(`http://localhost:3000/api/transactions/${endpoint}/${userId}`, newTransaction)
-        .then(response => {
-            $scope.transactionsToShow.push(response.data.transactions);
-            $scope.calculateTotalAmount();
-        })
-      $scope.closeModal();
-    };
-
-    // Apply filters
-    $scope.applyFilters = function () {
-      const userId = localStorage.getItem("id");
-      if (!userId) return;
-
-      const params = {
-        userId: userId
-      };
-
-      if ($scope.categoryFilter) params.category_id = $scope.categoryFilter;
-      if ($scope.fromDate) params.from = new Date($scope.fromDate).toISOString();
-      if ($scope.toDate) params.to = new Date($scope.toDate).toISOString();
-
-      $http.get(`http://localhost:3000/api/transactions/${userId}`, { params })
-        .then(response => {
-          if (response.data && Array.isArray(response.data.transactions)) {
-            $scope.transactionsToShow = response.data.transactions;
-            $scope.calculateTotalAmount();
-          }
+        .then(() => {
+          $scope.fetchData();
+          $scope.closeModal();
         })
         .catch(error => {
-          console.error("Error applying filters:", error);
-          alert("Error filtering transactions. Please try again.");
+          console.error("Error adding transaction:", error);
+          alert("Failed to add transaction.");
         });
     };
+
+    $scope.updateTransaction = function () {
+      const updatedTransaction = {
+        category_id: $scope.modalData.selectedCategory,
+        amount: $scope.modalData.transactionAmount,
+        date: $scope.modalData.transactionDate,
+        notes: $scope.modalData.transactionNotes,
+        transaction_type: $scope.modalData.transactionType,
+      };
+
+      $http.put(`http://localhost:3000/api/transactions/${$scope.modalData.transactionId}`, updatedTransaction)
+        .then(() => {
+          $scope.fetchData();
+          $scope.closeModal();
+        })
+        .catch(error => {
+          console.error("Error updating transaction:", error);
+          alert("Failed to update transaction.");
+        });
+    };
+
+    $scope.deleteTransaction = function () {
+      if (confirm("Are you sure you want to delete this transaction?")) {
+        $http.delete(`http://localhost:3000/api/transactions/${$scope.modalData.transactionId}`)
+          .then(() => {
+            $scope.fetchData();
+            $scope.closeModal();
+          })
+          .catch(error => {
+            console.error("Error deleting transaction:", error);
+            alert("Failed to delete transaction.");
+          });
+      }
+    };
+
+    $scope.fetchData();
   }
-]); 
+]);
